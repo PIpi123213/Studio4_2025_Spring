@@ -8,84 +8,76 @@ public class GrabHandPose : MonoBehaviour
     public HandData rightHandPose;
 
     private Vector3 startingHandPosition;
-    private Quaternion startingHandRotation;
-
     private Vector3 finalHandPosition;
+    private Quaternion startingHandRotation;
     private Quaternion finalHandRotation;
 
-    private Quaternion[] startingFingerRotation;
-    private Quaternion[] finalFingerRotation;
-    // Start is called before the first frame update
+    private Quaternion[] startingFingerRotations;
+    private Quaternion[] finalFingerRotations;
+
+
+
     void Start()
     {
         XRGrabInteractable grabInteractable = GetComponent<XRGrabInteractable>();
+
         grabInteractable.selectEntered.AddListener(SetupPose);
+        grabInteractable.selectExited.AddListener(UnSetPose);
+
         rightHandPose.gameObject.SetActive(false);
     }
+
     public void SetupPose(BaseInteractionEventArgs arg)
     {
-       /*if(arg.interactorObject is XRDirectInteractor)
+        if (arg.interactorObject is XRDirectInteractor)
         {
             HandData handData = arg.interactorObject.transform.GetComponentInChildren<HandData>();
             handData.animator.enabled = false;
-            //Debug.Log(handData.animator);
-            SetHandDataValues(handData, rightHandPose);
-            SetHandData(handData, finalHandPosition, finalHandRotation, finalFingerRotation);
-        }*/
-        if (arg.interactorObject is XRBaseControllerInteractor controllerInteractor && controllerInteractor != null)
-        {
-            HandData handData = controllerInteractor.xrController.transform.GetComponentInChildren<HandData>();
-            handData.animator.enabled = false;
-            SetHandDataValues(handData, rightHandPose);
-            SetHandData(handData, finalHandPosition, finalHandRotation, finalFingerRotation);
 
-
+            SetHandDataValues(handData, rightHandPose);
+            SendHandData(handData, finalHandPosition, finalHandRotation, finalFingerRotations);
         }
-
-
     }
-    public void SetHandDataValues(HandData h1,HandData h2)
+
+    public void UnSetPose(BaseInteractionEventArgs arg)
     {
-        startingHandPosition = h1.root.localPosition;
+        if (arg.interactorObject is XRDirectInteractor)
+        {
+            HandData handData = arg.interactorObject.transform.GetComponentInChildren<HandData>();
+            handData.animator.enabled = true;
+
+            SendHandData(handData, startingHandPosition, startingHandRotation, startingFingerRotations);
+            Debug.LogWarning("h1 World Position: " + handData.root.position + "h2 World Position: " + rightHandPose.root.position);
+        }
+    }
+    public void SetHandDataValues(HandData h1, HandData h2)
+    {
+        startingHandPosition = new Vector3(h1.root.localPosition.x / h1.root.localScale.x,
+            h1.root.localPosition.y / h1.root.localScale.y, h1.root.localPosition.z / h1.root.localScale.z);
+        finalHandPosition = new Vector3(h2.root.localPosition.x / h2.root.localScale.x,
+            h2.root.localPosition.y / h2.root.localScale.y, h2.root.localPosition.z / h2.root.localScale.z);
+
         startingHandRotation = h1.root.localRotation;
-        startingFingerRotation = new Quaternion[h1.fingerBones.Length];
-        finalHandPosition = h2.root.localPosition;
         finalHandRotation = h2.root.localRotation;
-        finalHandPosition = h2.root.localPosition;
-        finalHandRotation = h2.root.localRotation;
-        finalFingerRotation = new Quaternion[h2.fingerBones.Length];
 
-      
-
-
-        Debug.Log("1Position: " + h1.root.position +
-          ", 1LocalPosition: " + h1.root.localPosition +
-          ", 2Position: " + h2.root.position +
-          ", 2LocalPosition: " + h2.root.localPosition);
-
+        startingFingerRotations = new Quaternion[h1.fingerBones.Length];
+        finalFingerRotations = new Quaternion[h1.fingerBones.Length];
 
         for (int i = 0; i < h1.fingerBones.Length; i++)
         {
-            startingFingerRotation[i] = h1.fingerBones[i].rotation;
-            finalFingerRotation[i] = h2.fingerBones[i].rotation;
-
-
-        } 
-
-
+            startingFingerRotations[i] = h1.fingerBones[i].localRotation;
+            finalFingerRotations[i] = h2.fingerBones[i].localRotation;
+        }
     }
-    public void SetHandData(HandData h,Vector3 newPosition,Quaternion newRotation, Quaternion[] newBonesRotation)
+    public void SendHandData(HandData h, Vector3 newPosition, Quaternion newRotation, Quaternion[] newBonesRotation)
     {
         h.root.localPosition = newPosition;
         h.root.localRotation = newRotation;
-        for(int i = 0; i < newBonesRotation.Length; i++)
+
+        for (int i = 0; i < newBonesRotation.Length; i++)
         {
             h.fingerBones[i].localRotation = newBonesRotation[i];
-
-
         }
-
-
     }
     // Update is called once per frame
 
