@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,17 @@ public class GameManager : MonoBehaviour
 
             instance = this;
     }
+
+    private void OnEnable()
+    {
+        EventManager.GotoNextPhase += GoToNextPhase;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.GotoNextPhase -= GoToNextPhase;
+    }
+
     private GamePhase _currentPhase;
     private void Start()
     {
