@@ -5,9 +5,16 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class TwoHandGrabInteractable : XRGrabInteractable
 {
     // Start is called before the first frame update
+   
+
+
     void Start()
     {
-        
+     
+
+
+
+
     }
 
     // Update is called once per frame
@@ -15,4 +22,25 @@ public class TwoHandGrabInteractable : XRGrabInteractable
     {
         
     }
+    public override bool IsSelectableBy(XRBaseInteractor interactor)
+    {
+       /* bool isalreadygrabbed = selectingInteractor && !interactor.Equals(selectingInteractor);
+
+
+        return base.IsSelectableBy(interactor) && !isalreadygrabbed*/;
+
+        return base.IsSelectableBy(interactor);
+    }
+    public void OnSecondHandGrab(XRBaseInteractor interactor)
+    {
+    
+    
+    
+    
+    }
+    public void OnSerializeNetworkView(XRBaseInteractor interactor)
+    {
+        
+    }
+
 }
