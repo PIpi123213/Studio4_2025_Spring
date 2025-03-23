@@ -7,7 +7,7 @@ using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 public class CharacterClimb : MonoBehaviour
 {
     // Start is called before the first frame update
-    public ClimbProvider climbProvider;
+    public CustomClimbProvider climbProvider;
     public DynamicMoveProvider dynamicMoveProvider;
 
     void Start()

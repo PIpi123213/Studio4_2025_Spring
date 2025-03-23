@@ -888,7 +888,7 @@ GameObject:
   - component: {fileID: 5686134208185136530}
   - component: {fileID: 5686134208192617028}
   - component: {fileID: -2368749419795825841}
-  - component: {fileID: 5874547734018036800}
+  - component: {fileID: 2124549719563531314}
   m_Layer: 0
   m_Name: Right Hand Model
   m_TagString: Right Hand
@@ -973,7 +973,7 @@ MonoBehaviour:
     m_Reference: {fileID: -1758520528963094988, guid: c348712bda248c246b8c49b3db54643f,
       type: 3}
   handAnimator: {fileID: 5686134208192617028}
---- !u!114 &5874547734018036800
+--- !u!114 &2124549719563531314
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -982,7 +982,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5686134208185362930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd561ff019c4d4444a182dd32796239f, type: 3}
+  m_Script: {fileID: 11500000, guid: 28a1e9e9294f6e04ca0dc131c9f36378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
