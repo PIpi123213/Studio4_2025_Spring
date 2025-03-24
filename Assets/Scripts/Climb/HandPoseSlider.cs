@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-public class HandPoseGrab : MonoBehaviour
+
+public class HandPoseSlider : MonoBehaviour
 {
     // Start is called before the first frame update
     public bool ifTwoHandGrab = false;
@@ -26,7 +27,11 @@ public class HandPoseGrab : MonoBehaviour
     private Quaternion[] startingFingerRotations_right;
     private Quaternion[] finalFingerRotations_right;
 
+    private handDataPose pendingRightHandData = null;
+    private handDataPose pendingLeftHandData = null;
 
+    // 标识当前是否处于 zipline 状态（例如由 Zipline 脚本控制）
+    public bool ziplineActive = false;
 
     void Start()
     {
@@ -53,11 +58,10 @@ public class HandPoseGrab : MonoBehaviour
 
                 StartCoroutine(SetHandDataRoutine(handData, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right));
 
-                if (ifTwoHandGrab)
-                {
+               
                     rightHandPose.gameObject.SetActive(true);
                     rightHandModel_Geom.SetActive(false);
-                }
+                
 
 
             }
@@ -66,11 +70,10 @@ public class HandPoseGrab : MonoBehaviour
                 SetLeftHandDataValues(handData, leftHandPose);
                 // SendHandData(handData, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left);
                 StartCoroutine(SetHandDataRoutine(handData, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left));
-                if (ifTwoHandGrab)
-                {
+               
                     leftHandPose.gameObject.SetActive(true);
                     leftHandModel_Geom.SetActive(false);
-                }
+                
 
                 //Debug.LogWarning("leftshould"+ leftHandPose.transform.position + "final" + finalHandPosition_left + "left" + handData.root.position);
             }
@@ -82,38 +85,103 @@ public class HandPoseGrab : MonoBehaviour
 
     public void UnSetPose(BaseInteractionEventArgs arg)
     {
-        if (arg.interactorObject is XRDirectInteractor)
+        Debug.LogWarning("处理退出事件");
+        // 如果处于 zipline 状态，不直接处理退出，而是暂存手的数据
+        if (ziplineActive)
         {
-            Debug.LogWarning("songkai");
             handDataPose handData = arg.interactorObject.transform.GetComponentInChildren<handDataPose>();
-            if (handData.type == handDataPose.HandModelType.Right && rightHandPose != null)
+            if (handData != null)
             {
-                //SendHandData(handData, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right);
-                StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right));
-                if (ifTwoHandGrab)
+                if (handData.type == handDataPose.HandModelType.Right)
                 {
-                    rightHandPose.gameObject.SetActive(false);
-                    rightHandModel_Geom.SetActive(true);
+                    pendingRightHandData = handData;
+                    Debug.Log("暂存右手退出事件信息");
                 }
-
+                else if (handData.type == handDataPose.HandModelType.Left)
+                {
+                    pendingLeftHandData = handData;
+                    Debug.Log("暂存左手退出事件信息");
+                }
             }
-            else if (handData.type == handDataPose.HandModelType.Left && leftHandPose != null)
+            return;
+        }
+        else
+        {
+            if (arg.interactorObject is XRDirectInteractor)
             {
-                //SendHandData(handData, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left);
-                StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left));
-                if (ifTwoHandGrab)
+                Debug.LogWarning("songkai");
+                handDataPose handData = arg.interactorObject.transform.GetComponentInChildren<handDataPose>();
+                if (handData.type == handDataPose.HandModelType.Right && rightHandPose != null)
                 {
-                    leftHandPose.gameObject.SetActive(false);
-                    leftHandModel_Geom.SetActive(true);
+                    //SendHandData(handData, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right);
+                    StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right));
+                    
+                        rightHandPose.gameObject.SetActive(false);
+                        rightHandModel_Geom.SetActive(true);
+                    
+
                 }
+                else if (handData.type == handDataPose.HandModelType.Left && leftHandPose != null)
+                {
+                    //SendHandData(handData, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left);
+                    StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left));
+                    
+                    
+                        leftHandPose.gameObject.SetActive(false);
+                        leftHandModel_Geom.SetActive(true);
+                    
 
+                }
+                handData.animator.enabled = true;
             }
-            handData.animator.enabled = true;
-
-
-
+        }
+        // 非 zipline 状态下，直接处理退出事
+    }
+    
+    public void ProcessPendingExitEvents()
+    {
+        // 如果暂存了右手退出信息
+        if (pendingRightHandData != null)
+        {
+            ProcessUnSetPoseForHand(pendingRightHandData);
+            pendingRightHandData = null;
+        }
+        // 同理处理左手
+        if (pendingLeftHandData != null)
+        {
+            ProcessUnSetPoseForHand(pendingLeftHandData);
+            pendingLeftHandData = null;
         }
     }
+    private void ProcessUnSetPoseForHand(handDataPose handData)
+    {
+        Debug.LogWarning("处理暂存退出事件，手：" + handData.type);
+        if (handData.type == handDataPose.HandModelType.Right && rightHandPose != null)
+        {
+            // 此处的参数可以根据实际情况调整
+            StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right));
+            
+                rightHandPose.gameObject.SetActive(false);
+                rightHandModel_Geom.SetActive(true);
+            
+        }
+        else if (handData.type == handDataPose.HandModelType.Left && leftHandPose != null)
+        {
+            StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left));
+            
+                leftHandPose.gameObject.SetActive(false);
+                leftHandModel_Geom.SetActive(true);
+            
+        }
+        handData.animator.enabled = true;
+    }
+
+
+
+
+
+
+
     public void SetLeftHandDataValues(handDataPose h1, handDataPose h2)
     {
         startingHandPosition_left = new Vector3(h1.root.localPosition.x / h1.root.localScale.x,
@@ -185,7 +253,6 @@ public class HandPoseGrab : MonoBehaviour
 
 
     }
-
 
 
 

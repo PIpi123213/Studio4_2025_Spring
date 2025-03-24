@@ -355,7 +355,7 @@ namespace UnityEngine.XR.Interaction.Toolkit
                         {
                             movementInClimbSpace.z = -movementInClimbSpace.z / (1 + 200); // No movement if exceeds maxBackward
                         }
-                        else if (totalClimbOffset.z <= currentClimbInteractable.maxBackward)
+                        else if (totalClimbOffset.z <= -currentClimbInteractable.maxBackward)
                         {
                             float normalizedClimbOffsetZ = Mathf.InverseLerp(0, Mathf.Abs(currentClimbInteractable.maxBackward), Mathf.Abs(totalClimbOffset.z));
 
