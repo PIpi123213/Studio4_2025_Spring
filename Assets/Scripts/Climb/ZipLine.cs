@@ -72,7 +72,7 @@ public class ZipLine : MonoBehaviour
         // 将滑索器移动到起点位置
         zipLineHandler.position = startPoint.position;
         float currentSpeed = 0f; // 当前速度从 0 开始
-        float acceleration = speed / 2f; 
+        float acceleration = speed / 2.5f; 
         // 启动滑行过程
         while (zipLineHandler != null && Vector3.Distance(zipLineHandler.position, endPoint.position) > 0.1f)
         {

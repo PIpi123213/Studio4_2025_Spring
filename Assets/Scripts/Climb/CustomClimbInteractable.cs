@@ -13,7 +13,7 @@ namespace UnityEngine.XR.Interaction.Toolkit
   
     public class CustomClimbInteractable : XRBaseInteractable
     {
-        const float k_DefaultMaxInteractionDistance = 0.1f;
+        const float k_DefaultMaxInteractionDistance = 0.1f * 4f;
 
         [SerializeField]
         [Tooltip("The climb provider that performs locomotion while this interactable is selected. " +
@@ -98,21 +98,21 @@ namespace UnityEngine.XR.Interaction.Toolkit
 
         [Header("X Axis Constraints")]
         [Tooltip("允许向左运动的最大距离（负 X 方向）。")]
-        public float maxLeft = 0.35f;
+        public float maxLeft = 0.35f*4f;
         [Tooltip("允许向右运动的最大距离（正 X 方向）。")]
-        public float maxRight = 0.35f;
+        public float maxRight = 0.35f*4f;
 
         [Header("Y Axis Constraints")]
         [Tooltip("允许向上运动的最大距离（正 Y 方向）。")]
-        public float maxUp = 0.35f;
+        public float maxUp = 0.35f * 4f;
         [Tooltip("允许向下运动的最大距离（负 Y 方向）。")]
-        public float maxDown = 0.5f;
+        public float maxDown = 0.5f*4f;
 
         [Header("Z Axis Constraints")]
         [Tooltip("允许向前运动的最大距离（正 Z 方向）。")]
-        public float maxForward = 0.1f;
+        public float maxForward = 0.1f*4f;
         [Tooltip("允许向后运动的最大距离（负 Z 方向）。")]
-        public float maxBackward = 0.3f;
+        public float maxBackward = 0.3f * 4f;
 
 
         /// <summary>
