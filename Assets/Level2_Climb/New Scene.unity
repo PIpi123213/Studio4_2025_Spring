@@ -3917,7 +3917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 434b9bedcdcb2914e9783833af15366b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_InteractionManager: {fileID: 0}
+  m_InteractionManager: {fileID: 563810071}
   m_Colliders:
   - {fileID: 1352796148}
   - {fileID: 2106327872}
@@ -4069,7 +4069,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &861258629
 MonoBehaviour:
@@ -10618,7 +10618,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!1 &1922493924
 GameObject:
