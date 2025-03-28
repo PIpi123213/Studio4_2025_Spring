@@ -1,34 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class MoveManager : MonoBehaviour
 {
-    [Header("数据源")]
-    [SerializeField] private MoveInSpace _headsetData;
-
-    void OnEnable()
+    [SerializeField] private MoveInSpace _movementData;
+    public Transform TrackingObject;
+    private Vector3 localPosition = Vector3.zero;
+    private void Awake()
     {
-        if (_headsetData != null)
-        {
-            _headsetData.StartTracking();
-        }
+        _movementData.InitializeSystem();
     }
+
+    void Start()
+    {
+       
+    }
+    private void OnApplicationQuit()
+    {
+        _movementData.InitializeSystem();
+    }
+
 
     void Update()
     {
-        // 仅更新头显物理位移数据
-        _headsetData?.UpdateTracking();
+        if (TryGetDevicePosition(out Vector3 currentPos))
+        {
+            localPosition = TrackingObject.localPosition;
+            _movementData.UpdateOffset(localPosition);
+        }
     }
 
-    void OnDisable()
+   /* private bool TryGetDevicePosition(out Vector3 position)
     {
-        _headsetData?.ResetTracking();
-    }
+        var device = InputDevices.GetDeviceAtXRNode(XRNode.CenterEye);
+        if (device.isValid && device.TryGetFeatureValue(CommonUsages.devicePosition, out position))
+        {
+            return true;
+        }
 
-    // 示例：在其他脚本中访问数据
-    public Vector3 GetCurrentHeadsetOffset()
+        position = Vector3.zero; // 确保所有路径都有赋值
+        return false;
+    }*/
+    private bool TryGetDevicePosition(out Vector3 position)
     {
-        return _headsetData?.PhysicalOffset ?? Vector3.zero;
+        var device = InputDevices.GetDeviceAtXRNode(XRNode.CenterEye);
+        if (device.isValid && device.TryGetFeatureValue(CommonUsages.devicePosition, out position))
+        {
+            return true;
+        }
+
+        position = Vector3.zero; // 确保所有路径都有赋值
+        return false;
     }
 }
