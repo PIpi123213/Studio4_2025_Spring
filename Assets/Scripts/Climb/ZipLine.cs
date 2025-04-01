@@ -56,10 +56,7 @@ public class ZipLine : MonoBehaviour
                 //grabInteractable.interactionLayers = 0; // 禁用所有交互层
                 handPoseSlider.ziplineActive = true;
                 // 记录玩家和滑索器之间的初始偏移量
-                if (zipLineHandler != null && playerTransform != null)
-                {
-                    initialPlayerOffset = playerTransform.position - zipLineHandler.position;
-                }
+              
 
                 // 开始滑行
                 StartCoroutine(SlideAlongZipline());
@@ -101,12 +98,11 @@ public class ZipLine : MonoBehaviour
         for (int i = 0; i < waypoints.Length - 1; i++)
         {
             Vector3 direction = (waypoints[i + 1].position - waypoints[i].position).normalized;
-            waypointRotations[i] = Quaternion.LookRotation(direction);
+            // 让X轴指向方向，其余轴根据需求调整
+            waypointRotations[i] = Quaternion.LookRotation(direction) * Quaternion.Euler(0, -90, 0);
         }
-        // 最后一个点保持前一个点的旋转
         waypointRotations[waypoints.Length - 1] = waypointRotations[waypoints.Length - 2];
     }
-
     private System.Collections.IEnumerator SlideAlongZipline()
     {
         // 确保至少有两个点
@@ -115,12 +111,17 @@ public class ZipLine : MonoBehaviour
             Debug.LogError("需要至少设置2个路径点！");
             yield break;
         }
-
+        if (zipLineHandler != null && playerTransform != null)
+        {
+            initialPlayerOffset = playerTransform.position - zipLineHandler.position;
+        }
+        Transform originalParent = playerTransform.parent;
+        playerTransform.SetParent(zipLineHandler);
         // 初始化：移动到第一个点
         zipLineHandler.position = waypoints[0].position;
         int currentWaypointIndex = 1;
         float currentSpeed = 0f;
-        float acceleration = speed / 2.5f;
+        float acceleration = speed / 3f;
 
         // 遍历所有路径段
         while (currentWaypointIndex < waypoints.Length)
@@ -140,30 +141,28 @@ public class ZipLine : MonoBehaviour
                     end.position,
                     currentSpeed * Time.deltaTime
                 );
+            
                 zipLineHandler.rotation = Quaternion.RotateTowards(
                   zipLineHandler.rotation,
                   targetRotation,
                   rotationSpeed * Time.deltaTime
               );
                 // 同步玩家位置
-                if (playerTransform != null)
+              /*  if (playerTransform != null)
                 {
                     playerTransform.position = zipLineHandler.position + initialPlayerOffset;
-                    playerTransform.rotation = Quaternion.RotateTowards(
-                      playerTransform.rotation,
-                      targetRotation,
-                      rotationSpeed * Time.deltaTime
-                  );
-                }
+                    playerTransform.rotation = zipLineHandler.rotation * Quaternion.Euler(0, -180, 0);
+                }*/
 
                 yield return null;
             }
 
             // 到达当前终点后，切换到下一段
             currentWaypointIndex++;
+            //initialPlayerOffset = playerTransform.position - zipLineHandler.position;
             //currentSpeed = 0f; // 重置速度（可选）
         }
-
+        playerTransform.SetParent(originalParent);
         EndZiplineRide();
     }
 

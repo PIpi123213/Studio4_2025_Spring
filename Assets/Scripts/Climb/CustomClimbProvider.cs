@@ -1,4 +1,6 @@
+using Oculus.Interaction;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine.Assertions;
 
 namespace UnityEngine.XR.Interaction.Toolkit
@@ -20,7 +22,9 @@ namespace UnityEngine.XR.Interaction.Toolkit
         private Vector3 m_InteractorAnchorWorldPosition;
         private Vector3 m_InteractorAnchorClimbSpacePosition;
         private Vector3 totalClimbOffset = Vector3.zero;
-
+        private Vector3 lefthandPos = Vector3.zero;
+        private Vector3 righthandPos = Vector3.zero;
+      
         [SerializeField]
         [Tooltip("Climb locomotion settings. Can be overridden by the Climb Interactable used for locomotion.")]
         ClimbSettingsDatumProperty m_ClimbSettings = new ClimbSettingsDatumProperty(new ClimbSettings());
@@ -28,6 +32,8 @@ namespace UnityEngine.XR.Interaction.Toolkit
         /// <summary>
         /// Climb locomotion settings. Can be overridden by the <see cref="CustomClimbInteractable"/> used for locomotion.
         /// </summary>
+        /// 
+
         public ClimbSettingsDatumProperty climbSettings
         {
             get => m_ClimbSettings;
@@ -47,7 +53,17 @@ namespace UnityEngine.XR.Interaction.Toolkit
             var xrOrigin = system.xrOrigin?.Origin;
             if (xrOrigin == null)
                 return;
-
+            handDataPose handData = interactor.transform.GetComponentInChildren<handDataPose>();
+            Debug.LogWarning(handData);
+            if (handData != null)
+            {
+                if (!handData.isLocked)
+                {
+                    // 首次抓取时记录锁定位置
+                    handData.lockedPosition = handData.root.position;
+                    handData.isLocked = true;
+                }
+            }
             totalClimbOffset = Vector3.zero;
             m_GrabbingInteractors.Add(interactor);
             m_GrabbedClimbables.Add(climbInteractable);
@@ -70,7 +86,17 @@ namespace UnityEngine.XR.Interaction.Toolkit
                 var newLastIndex = interactionIndex - 1;
                 UpdateClimbAnchor(m_GrabbedClimbables[newLastIndex], m_GrabbingInteractors[newLastIndex]);
             }
+            handDataPose handData = interactor.transform.GetComponentInChildren<handDataPose>();
 
+            if (handData != null)
+            {
+                if (handData.isLocked)
+                {
+                    // 首次抓取时记录锁定位置
+                    //handData.lockedPosition = handData.root.position;
+                    handData.isLocked = false;
+                }
+            }
             if (m_GrabbingInteractors.Count == 0)
             {
                 totalClimbOffset = Vector3.zero;
@@ -110,6 +136,7 @@ namespace UnityEngine.XR.Interaction.Toolkit
                 var lastIndex = m_GrabbingInteractors.Count - 1;
                 var currentInteractor = m_GrabbingInteractors[lastIndex];
                 var currentClimbInteractable = m_GrabbedClimbables[lastIndex];
+             
                 if (currentInteractor == null || currentClimbInteractable == null)
                 {
                     FinishLocomotion();
@@ -129,6 +156,7 @@ namespace UnityEngine.XR.Interaction.Toolkit
             var xrOrigin = system.xrOrigin?.Origin;
             if (xrOrigin != null)
             {
+               
                 var activeClimbSettings = GetActiveClimbSettings(currentClimbInteractable);
                 var allowFreeXMovement = activeClimbSettings.allowFreeXMovement;
                 var allowFreeYMovement = activeClimbSettings.allowFreeYMovement;
