@@ -8147,7 +8147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4527542682354864, guid: 8b2c8e6fe9323344c8b3646bed0cdd10, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -518.78
+      value: -519.55
       objectReference: {fileID: 0}
     - target: {fileID: 4527542682354864, guid: 8b2c8e6fe9323344c8b3646bed0cdd10, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8155,7 +8155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4527542682354864, guid: 8b2c8e6fe9323344c8b3646bed0cdd10, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 297.7
+      value: 297.13
       objectReference: {fileID: 0}
     - target: {fileID: 4527542682354864, guid: 8b2c8e6fe9323344c8b3646bed0cdd10, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9711,8 +9711,8 @@ MonoBehaviour:
   maxRight: 1.4
   maxUp: 1.4
   maxDown: 2
-  maxForward: 0.4
-  maxBackward: 1.4
+  maxForward: 1
+  maxBackward: 0.3
 --- !u!54 &2097263667
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10817,7 +10817,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.6779469, y: 0.20096704, z: 0.20096704, w: -0.6779473}
   m_LocalPosition: {x: -521.03, y: 829.64, z: 302.89}
-  m_LocalScale: {x: -1.7193207, y: -1.7193207, z: -1.7193207}
+  m_LocalScale: {x: -2.2512784, y: -3, z: -3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
