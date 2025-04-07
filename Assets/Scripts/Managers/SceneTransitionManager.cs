@@ -1,54 +1,84 @@
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-// using UnityEngine.SceneManagement;
-//
-// public class SceneTransitionManager : MonoBehaviour
-// {
-//     public FadeScreen fadeScreen;
-//     public static SceneTransitionManager instance;
-//
-//     private void Awake()
-//     {
-//         if (instance && instance != this)
-//             Destroy(instance);
-//
-//         instance = this;
-//     }
-//
-//     public void GoToScene(int sceneIndex)
-//     {
-//         StartCoroutine(GoToSceneRoutine(sceneIndex));
-//     }
-//
-//     IEnumerator GoToSceneRoutine(int sceneIndex)
-//     {
-//         fadeScreen.FadeOut();
-//         yield return new WaitForSeconds(fadeScreen.fadeDuration);
-//
-//         //Launch the new scene
-//         SceneManager.LoadScene(sceneIndex);
-//     }
-//
-//     // public void GoToSceneAsync(int sceneIndex)
-//     // {
-//     //     StartCoroutine(GoToSceneAsyncRoutine(sceneIndex));
-//     // }
-//
-//     // IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
-//     // {
-//     //     fadeScreen.FadeOut();
-//     //     //Launch the new scene
-//     //     AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
-//     //     operation.allowSceneActivation = false;
-//     //
-//     //     float timer = 0;
-//     //     while(timer <= fadeScreen.fadeDuration && !operation.isDone)
-//     //     {
-//     //         timer += Time.deltaTime;
-//     //         yield return null;
-//     //     }
-//     //
-//     //     operation.allowSceneActivation = true;
-//     // }
-// }
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class SceneTransitionManager : MonoBehaviour
+{
+   
+    public static SceneTransitionManager Instance { get; private set; }
+    public string CurrentSceneName;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        UpdateCurrentScene();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            MoveManager.Instance.OnSceneIn();//记录位置
+            MoveManager.Instance.OnSceneOut();
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneTransitionManager.Instance.GoToScene(currentScene.name);
+
+
+        }
+
+
+
+
+    }
+    private void UpdateCurrentScene()
+    {
+        CurrentSceneName = SceneManager.GetActiveScene().name;
+        Debug.Log($"Current Scene: {CurrentSceneName}");
+    }
+    // 同步场景加载
+    public void GoToScene(string sceneIndex)
+    {
+      
+        StartCoroutine(GoToSceneRoutine(sceneIndex));
+    }
+
+    private IEnumerator GoToSceneRoutine(string sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex);
+        yield return null;
+        UpdateCurrentScene();
+
+    }
+
+    // 异步场景加载（带进度控制）
+    public void GoToSceneAsync(string sceneIndex)
+    {
+        StartCoroutine(GoToSceneAsyncRoutine(sceneIndex));
+    }
+
+    private IEnumerator GoToSceneAsyncRoutine(string sceneIndex)
+    {
+     
+
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
+        operation.allowSceneActivation = false;
+
+        float timer = 0;
+     
+
+        operation.allowSceneActivation = true;
+
+        // 等待场景完全激活
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
+
+        UpdateCurrentScene();
+    }
+}

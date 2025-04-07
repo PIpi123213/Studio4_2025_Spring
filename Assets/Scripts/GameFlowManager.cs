@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
                 Destroy(instance);
 
             instance = this;
+            DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable()
