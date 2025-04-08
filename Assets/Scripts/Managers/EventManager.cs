@@ -22,7 +22,7 @@ public class EventManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
     
-    /// 注册事件监听
+    /// 订阅事件监听
     public void Subscribe(string eventName, Action<object> listener)
     {
         if (!eventTable.ContainsKey(eventName))
