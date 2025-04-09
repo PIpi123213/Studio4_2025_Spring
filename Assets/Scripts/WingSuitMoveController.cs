@@ -43,16 +43,23 @@ public class WingSuitMoveController : MonoBehaviour
     }
 
     // 仅用 yaw 控制水平旋转即可
-    private float yaw = 0f;
+    private                  float     yaw = 0f;
     [SerializeField] private Transform leftController;
     [SerializeField] private Transform rightController;
+    private                  float     currentYaw  = 0f; // 实际旋转的 Y 值（带缓动）
+    private                  float     yawVelocity = 0f; // 平滑用的速度缓存变量
+
     private void ApplyRotation()
     {
-        // 根据控制器的高度差更新 yaw
+        // 1. 计算目标 yaw
         yaw += (leftController.position.y - rightController.position.y) * 120f * Time.deltaTime;
-        Debug.Log("yaw: " + yaw);
-        // 这里建议只用 Y 轴旋转，如果需要其他轴，可以调整
-        rb.MoveRotation(Quaternion.Euler(0, yaw, 0));
+
+        // 2. 平滑过渡 currentYaw → yaw（使用 SmoothDamp）
+        currentYaw = Mathf.SmoothDampAngle(currentYaw, yaw, ref yawVelocity, 0.2f);
+
+        // 3. 应用平滑后的角度
+        Quaternion targetRotation = Quaternion.Euler(0f, currentYaw, 0f);
+        rb.MoveRotation(targetRotation);
     }
 
     [SerializeField] private float correctiveForce = 1000f;
@@ -78,35 +85,44 @@ public class WingSuitMoveController : MonoBehaviour
     {
         Debug.Log("Detected object: " + other.name);
         // 计算远离物体的方向；这里可以依据需求调整策略
-        Vector3 directionAway = transform.forward + (transform.position - other.ClosestPoint(transform.position)).normalized;
+        Vector3 directionAway = transform.forward*1.5f + (transform.position - other.ClosestPoint(transform.position)).normalized;
         // 启动协程平滑转向，同时禁用控制器输入旋转
-        StartCoroutine(SmoothRotateAway(directionAway, 1f));
+        StartCoroutine(SmoothRotateAway(directionAway, 2f));
     }
 
     private IEnumerator SmoothRotateAway(Vector3 direction, float duration)
     {
-        // 禁用基于输入的旋转
         isRotatingAway = true;
 
         Quaternion initialRotation = rb.rotation;
         Quaternion targetRotation  = Quaternion.LookRotation(direction);
-        float elapsedTime = 0f;
+        float      elapsedTime     = 0f;
 
         while (elapsedTime < duration)
         {
+            // 计算 0~1 的 t 值
             float t = elapsedTime / duration;
-            Quaternion newRotation = Quaternion.Slerp(initialRotation, targetRotation, t);
+
+            // 使用 SmoothStep 创建渐进式插值因子（缓入缓出）
+            float smoothT = Mathf.SmoothStep(0f, 1f, t);
+
+            // 使用平滑后的插值因子进行球形插值
+            Quaternion newRotation = Quaternion.Slerp(initialRotation, targetRotation, smoothT);
+
             rb.MoveRotation(newRotation);
-            // 同步更新 yaw
             yaw = newRotation.eulerAngles.y;
+
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         rb.MoveRotation(targetRotation);
-        yaw = targetRotation.eulerAngles.y;
+        yaw            = targetRotation.eulerAngles.y;
 
-        // 恢复基于输入的旋转控制
+        currentYaw     = yaw;
+        yawVelocity    = 0f;
+
         isRotatingAway = false;
     }
+
 }
