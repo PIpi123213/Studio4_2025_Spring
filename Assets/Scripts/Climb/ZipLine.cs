@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 public class ZipLine : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class ZipLine : MonoBehaviour
     private bool isDone=false;
     private Vector3 initialPlayerOffset; // 记录玩家和滑索器之间的初始偏移量
     public HandPoseSlider handPoseSlider;
+    public DynamicMoveProvider dynamicMoveProvider;
     private void Start()
     {
         PrecalculateWaypointRotations();
@@ -33,11 +35,14 @@ public class ZipLine : MonoBehaviour
 
         // 监听抓取事件
         grabInteractable.selectEntered.AddListener(OnGrab);
+        //grabInteractable.selectExited.AddListener(OnRelase);
+        grabInteractable.selectExited.AddListener(UnSetPose);
     }
 
     private void OnDestroy()
     {
         grabInteractable.selectEntered.RemoveListener(OnGrab);
+        grabInteractable.selectExited.RemoveListener(UnSetPose);
     }
 
     private void OnGrab(SelectEnterEventArgs args)
@@ -45,6 +50,8 @@ public class ZipLine : MonoBehaviour
         if (isSliding||isDone) return;
 
         playerInteractor = args.interactorObject as IXRSelectInteractor;
+
+        dynamicMoveProvider.useGravity = false;
 
         if (playerInteractor != null)
         {
@@ -65,7 +72,25 @@ public class ZipLine : MonoBehaviour
           
         }
     }
+    private void UnSetPose(SelectExitEventArgs args)
+    {
+        
+        if (isSliding || isDone) return;
 
+        playerInteractor = args.interactorObject as IXRSelectInteractor;
+        if (playerInteractor != null)
+        {
+            if (grabInteractable.interactorsSelecting.Count == 0 )
+            {
+                dynamicMoveProvider.useGravity = true;
+            }
+
+
+        }
+
+
+
+    }
     /*  private System.Collections.IEnumerator SlideAlongZipline()
       {
           // 将滑索器移动到起点位置
@@ -174,7 +199,7 @@ public class ZipLine : MonoBehaviour
         handPoseSlider.ProcessPendingExitEvents();
         // **恢复交互**
         //grabInteractable.interactionLayers = originalLayer;
-
+        dynamicMoveProvider.useGravity = true;
         // **强制释放玩家**
         var interactors = new List<IXRSelectInteractor>(grabInteractable.interactorsSelecting);
         foreach (var interactor in interactors)
