@@ -23,6 +23,7 @@ public class MoveManager : MonoBehaviour
             Destroy(gameObject);  // ∑¿÷π÷ÿ∏¥¥¥Ω®
         }
         _movementData.InitializeSystem();
+        CurrentWorldPosition = this.transform.position;
     }
 
     void Start()
@@ -59,7 +60,7 @@ public class MoveManager : MonoBehaviour
     public void OnSceneIn()
     {
         CurrentWorldPosition = this.transform.position;
-
+        Debug.Log(this.transform.position);
 
 
     }
@@ -68,6 +69,7 @@ public class MoveManager : MonoBehaviour
     {
         CurrentWorldPosition = CurrentWorldPosition + localPosition;
         this.transform.position = CurrentWorldPosition;
+        Debug.Log(this.transform.position);
 
 
     }
