@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/BruteForce/Editor/BF_SandTerrainEdit.cs.meta
+guid: 61f7f290d9373ab419655a3dfc32efbd
+========
+guid: ca49ce89a7a4e3049ab9b978578436f5
+>>>>>>>> 3b01271d2062184d2d874f3063e68900fbaf0279:Assets/Scripts/DontDestoryPlayer.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
