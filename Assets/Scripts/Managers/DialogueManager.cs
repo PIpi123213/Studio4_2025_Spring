@@ -10,8 +10,7 @@ public class DialogueManager : MonoBehaviour
     [Header("旁白Timeline绑定表")]
     public List<NamedNarration> narrationTimelines;
 
-    private Dictionary<string, PlayableAsset> narrationDict;
-    private PlayableDirector director;
+    private Dictionary<string, PlayableDirector> narrationDict;
 
     // 事件名
     public const string PlayDialogue = "PlayDialogue";
@@ -21,7 +20,7 @@ public class DialogueManager : MonoBehaviour
     public class NamedNarration
     {
         public string key;
-        public PlayableAsset timelineAsset;
+        public PlayableDirector director; // 改为绑定 PlayableDirector 而非 Asset
     }
 
     private void Awake()
@@ -35,15 +34,13 @@ public class DialogueManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
 
-        director = GetComponent<PlayableDirector>();
-
-        // 初始化 key → Timeline 字典
-        narrationDict = new Dictionary<string, PlayableAsset>();
+        // 初始化 key → Director 字典
+        narrationDict = new Dictionary<string, PlayableDirector>();
         foreach (var item in narrationTimelines)
         {
             if (!narrationDict.ContainsKey(item.key))
             {
-                narrationDict.Add(item.key, item.timelineAsset);
+                narrationDict.Add(item.key, item.director);
             }
         }
     }
@@ -55,7 +52,7 @@ public class DialogueManager : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.Instance.Unsubscribe(DialogueFinished, OnPlayDialogue);
+        EventManager.Instance.Unsubscribe(PlayDialogue, OnPlayDialogue);
     }
 
     private void OnPlayDialogue(object param)
@@ -71,13 +68,12 @@ public class DialogueManager : MonoBehaviour
             Debug.LogWarning($"未找到旁白 Timeline，key: {key}");
             return;
         }
-        var asset = narrationDict[key];
-        director.playableAsset = asset;
-        // 清除旧的回调，避免重复注册
-        director.stopped -= OnDialogueFinished;
-        director.stopped += OnDialogueFinished;
 
-        director.Play();
+        var targetDirector = narrationDict[key];
+        targetDirector.stopped -= OnDialogueFinished;
+        targetDirector.stopped += OnDialogueFinished;
+
+        targetDirector.Play();
     }
 
     private void OnDialogueFinished(PlayableDirector _)
