@@ -1,103 +1,112 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
+using System.Collections;
 
 public class WingSuitMoveController : MonoBehaviour
 {
     private Rigidbody rb;
+    private TrailRenderer trailRenderer;
+    private bool isRotatingAway = false; // 新增标志
 
-    [SerializeField] private float     glideFoward = 0.2f;
-    private float     maxSpeed    = 8.5f;
-    private float     currentSpeed = 0.0f;
-    private float     turnThreshold   = 0.1f; // 转向差异阈值
-
-    [SerializeField] private Transform leftController;
-    [SerializeField] private Transform rightController;
     void Start()
     {
-        rb            = GetComponent<Rigidbody>();
-        rb.useGravity = false; // 关闭重力，依赖推力维持飞行
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
+
+        trailRenderer = gameObject.AddComponent<TrailRenderer>();
+        trailRenderer.time       = 100.0f;
+        trailRenderer.startWidth = 0.5f;
+        trailRenderer.endWidth   = 0.1f;
+        trailRenderer.material   = new Material(Shader.Find("Sprites/Default"));
+        trailRenderer.startColor = Color.white;
+        trailRenderer.endColor   = Color.clear;
     }
-    [SerializeField] private float flySpeed = 1f;
-    private float yaw = 0f;
-    // Update is called once per frame
+
     void Update()
     {
-        DetectSpeed();
-        transform.position += transform.forward * flySpeed * Time.deltaTime;
-        yaw                += (leftController.position.y - rightController.position.y) * 120 * Time.deltaTime;
-        //应用旋转
-        transform.localRotation = Quaternion.Euler(Vector3.up*yaw+Vector3.right+Vector3.forward);
+        Debug.DrawRay(transform.position, -transform.forward * 10000f, Color.red);
     }
 
-    //检测当前速度是否超速
-    private void DetectSpeed()
+    private void FixedUpdate()
     {
-        Vector3 currentVelocity = rb.velocity;
-        if (currentVelocity.magnitude > maxSpeed)
+        ApplyMovement();
+        if (!isRotatingAway) // 只有不处于纠正旋转时才响应输入
         {
-            // 计算速度在单位方向上的向量
-            Vector3 normalizedVelocity = currentVelocity.normalized;
-
-            // 将速度限制在阈值内
-            rb.velocity = normalizedVelocity * maxSpeed;
+            ApplyRotation();
         }
     }
 
-    //检测飞行状态
-    private string DetectFlyState()
+    [SerializeField] private float glideSpeed = 1000f;
+    private void ApplyMovement()
     {
-        float heightDifference = leftController.position.y - rightController.position.y;
-        if(heightDifference > turnThreshold)
-        {
-            // 左手高于右手，向左转
-            return  "left";
-        }
-        else if(heightDifference < -turnThreshold)
-        {
-            // 右手高于左手，向右转
-            return "right";
-        }
-        else
-        {
-            return "forward";
-        }
+        rb.velocity = transform.forward * glideSpeed;
     }
 
-    //头部转向，防止xrrig转向后，视角不转
-    private void TurnLeftOrRight(float angle)
+    // 仅用 yaw 控制水平旋转即可
+    private float yaw = 0f;
+    [SerializeField] private Transform leftController;
+    [SerializeField] private Transform rightController;
+    private void ApplyRotation()
     {
-        // 计算旋转的四元数
-        Quaternion rotation = Quaternion.Euler(0, angle, 0);
-
-        // 应用旋转
-        rb.MoveRotation(rb.rotation * rotation);
+        // 根据控制器的高度差更新 yaw
+        yaw += (leftController.position.y - rightController.position.y) * 120f * Time.deltaTime;
+        Debug.Log("yaw: " + yaw);
+        // 这里建议只用 Y 轴旋转，如果需要其他轴，可以调整
+        rb.MoveRotation(Quaternion.Euler(0, yaw, 0));
     }
 
-    //控制飞行状态
-
-    private void ControlFlyState(string flyState)
+    [SerializeField] private float correctiveForce = 1000f;
+    private Coroutine correctiveForceCoroutine;
+    private IEnumerator ApplyCorrectiveForce(Vector3 direction, float duration)
     {
-        Vector3 forwardForce = transform.forward * glideFoward;
-        Vector3 leftForce   = -transform.right * glideFoward;
-        Vector3 rightForce  = transform.right * glideFoward;
-        rb.AddForce(forwardForce, ForceMode.Acceleration);
+        float elapsedTime = 0f;
+        Quaternion initialRotation = rb.rotation;
+        Quaternion targetRotation  = Quaternion.LookRotation(direction);
 
-        switch (flyState)
+        while (elapsedTime < duration)
         {
-            case "left":
-                TurnLeftOrRight(-turnThreshold);
-                rb.AddForce(leftForce, ForceMode.Acceleration);
-                break;
-            case "right":
-                TurnLeftOrRight(turnThreshold);
-                rb.AddForce(rightForce, ForceMode.Acceleration);
-                break;
-            case "forward":
-                break;
-            default:
-                break;
+            float t = elapsedTime / duration;
+            rb.velocity = rb.velocity + direction * correctiveForce * t;
+            rb.MoveRotation(Quaternion.Slerp(initialRotation, targetRotation, t));
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
+        rb.MoveRotation(targetRotation);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Detected object: " + other.name);
+        // 计算远离物体的方向；这里可以依据需求调整策略
+        Vector3 directionAway = transform.forward + (transform.position - other.ClosestPoint(transform.position)).normalized;
+        // 启动协程平滑转向，同时禁用控制器输入旋转
+        StartCoroutine(SmoothRotateAway(directionAway, 1f));
+    }
+
+    private IEnumerator SmoothRotateAway(Vector3 direction, float duration)
+    {
+        // 禁用基于输入的旋转
+        isRotatingAway = true;
+
+        Quaternion initialRotation = rb.rotation;
+        Quaternion targetRotation  = Quaternion.LookRotation(direction);
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            float t = elapsedTime / duration;
+            Quaternion newRotation = Quaternion.Slerp(initialRotation, targetRotation, t);
+            rb.MoveRotation(newRotation);
+            // 同步更新 yaw
+            yaw = newRotation.eulerAngles.y;
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        rb.MoveRotation(targetRotation);
+        yaw = targetRotation.eulerAngles.y;
+
+        // 恢复基于输入的旋转控制
+        isRotatingAway = false;
     }
 }

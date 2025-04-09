@@ -6,16 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="23712185-3819-432a-9790-74aa64ebc91a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Studio4_2025_Spring01/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Studio4_2025_Spring01/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Level2_Climb/textures/dyrchatoe_rastenie_normal.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Level2_Climb/textures/dyrchatoe_rastenie_normal.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Level2_Climb/textures/grib1snow_normal.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Level2_Climb/textures/grib1snow_normal.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Level2_Climb/textures/gribsnow2_norm.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Level2_Climb/textures/gribsnow2_norm.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Level2_Climb/textures/griby_zombie_normal.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Level2_Climb/textures/griby_zombie_normal.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Level2_Climb/textures/mushroomBoloto_normal.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Level2_Climb/textures/mushroomBoloto_normal.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Level2_Climb/textures/mushrooms_2_normal.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Level2_Climb/textures/mushrooms_2_normal.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Level2_Climb/textures/mushrooms_normal.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Level2_Climb/textures/mushrooms_normal.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameFlowManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameFlowManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/EventManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/EventManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/DialogueManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/DialogueManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +15,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/StoryTimelineTestScripts/DialogueInputTester.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -103,7 +97,9 @@
       <workItem from="1743601620680" duration="56000" />
       <workItem from="1743776332821" duration="27000" />
       <workItem from="1743781907090" duration="1474000" />
-      <workItem from="1744108721426" duration="7712000" />
+      <workItem from="1744108721426" duration="7768000" />
+      <workItem from="1744175557591" duration="5134000" />
+      <workItem from="1744192481397" duration="2233000" />
     </task>
     <servers />
   </component>

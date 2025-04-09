@@ -1,18 +1,84 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class DialogueManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static DialogueManager Instance { get; private set; }
+
+    [Header("旁白Timeline绑定表")]
+    public List<NamedNarration> narrationTimelines;
+
+    private Dictionary<string, PlayableDirector> narrationDict;
+
+    // 事件名
+    public const string PlayDialogue = "PlayDialogue";
+    public const string DialogueFinished = "DialogueFinished";
+
+    [Serializable]
+    public class NamedNarration
     {
-        
+        public string key;
+        public PlayableDirector director; // 改为绑定 PlayableDirector 而非 Asset
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        // 单例
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+
+        // 初始化 key → Director 字典
+        narrationDict = new Dictionary<string, PlayableDirector>();
+        foreach (var item in narrationTimelines)
+        {
+            if (!narrationDict.ContainsKey(item.key))
+            {
+                narrationDict.Add(item.key, item.director);
+            }
+        }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Instance.Subscribe(PlayDialogue, OnPlayDialogue);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.Unsubscribe(PlayDialogue, OnPlayDialogue);
+    }
+
+    private void OnPlayDialogue(object param)
+    {
+        string key = param as string;
+        if (string.IsNullOrEmpty(key))
+        {
+            Debug.LogWarning("PlayNarration 参数为空！");
+            return;
+        }
+        if (!narrationDict.ContainsKey(key))
+        {
+            Debug.LogWarning($"未找到旁白 Timeline，key: {key}");
+            return;
+        }
+
+        var targetDirector = narrationDict[key];
+        targetDirector.stopped -= OnDialogueFinished;
+        targetDirector.stopped += OnDialogueFinished;
+
+        targetDirector.Play();
+    }
+
+    private void OnDialogueFinished(PlayableDirector _)
+    {
+        Debug.Log("旁白播放完成！");
+        EventManager.Instance.Trigger(DialogueFinished);
     }
 }
