@@ -85,28 +85,33 @@ public class WingSuitMoveController : MonoBehaviour
 
     private IEnumerator SmoothRotateAway(Vector3 direction, float duration)
     {
-        // 禁用基于输入的旋转
         isRotatingAway = true;
 
         Quaternion initialRotation = rb.rotation;
         Quaternion targetRotation  = Quaternion.LookRotation(direction);
-        float elapsedTime = 0f;
+        float      elapsedTime     = 0f;
 
         while (elapsedTime < duration)
         {
+            // 计算 0~1 的 t 值
             float t = elapsedTime / duration;
-            Quaternion newRotation = Quaternion.Slerp(initialRotation, targetRotation, t);
+
+            // 使用 SmoothStep 创建渐进式插值因子（缓入缓出）
+            float smoothT = Mathf.SmoothStep(0f, 1f, t);
+
+            // 使用平滑后的插值因子进行球形插值
+            Quaternion newRotation = Quaternion.Slerp(initialRotation, targetRotation, smoothT);
+
             rb.MoveRotation(newRotation);
-            // 同步更新 yaw
             yaw = newRotation.eulerAngles.y;
+
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         rb.MoveRotation(targetRotation);
-        yaw = targetRotation.eulerAngles.y;
-
-        // 恢复基于输入的旋转控制
+        yaw            = targetRotation.eulerAngles.y;
         isRotatingAway = false;
     }
+
 }
