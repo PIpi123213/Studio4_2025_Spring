@@ -2,6 +2,7 @@ using AmazingAssets.DynamicRadialMasks;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class SceneTransitionTrigger : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class SceneTransitionTrigger : MonoBehaviour
     [SerializeField] private DRMGameObject drmGameObject;
     [SerializeField] private OVRPassthroughLayer ptLayer;
     bool hasTriggered = false;
+    private bool radiusFinished =false;
+    private bool opacityFinished = false;
+
+
     void Start()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
@@ -19,7 +24,10 @@ public class SceneTransitionTrigger : MonoBehaviour
         grabInteractable.selectEntered.AddListener(OnSelectEnter);
         drmGameObject.radius = 0;
     }
-
+    private void Update()
+    {
+      
+    }
     private void OnSelectEnter(SelectEnterEventArgs args)
     {
         Debug.Log("catch it！");
@@ -27,10 +35,30 @@ public class SceneTransitionTrigger : MonoBehaviour
         GetComponent<Renderer>().material.color = Color.red;
         if (!hasTriggered)
         {
-            StartCoroutine(AnimateRadius());
-            StartCoroutine(AnimateOpacity());
+            //StartCoroutine(AnimateRadius());
+            //StartCoroutine(AnimateOpacity());
+            StartCoroutine(RunBothAnimations());
+       
         }
     }
+    private IEnumerator RunBothAnimations()
+    {
+        // 同时启动两个动画
+        hasTriggered = true;
+        Coroutine radiusRoutine = StartCoroutine(AnimateRadius());
+        Coroutine opacityRoutine = StartCoroutine(AnimateOpacity());
+
+        // 等待两者完成（总时间取最大值）
+        yield return radiusRoutine;
+        yield return opacityRoutine;
+      
+        MoveManager.Instance.OnSceneIn();//记录位置
+        // 完成后执行场景切换或其他逻辑
+        Debug.Log("All animations completed!");
+       
+    }
+
+
     [SerializeField] float RadiusDuration    = 5f;
     [SerializeField] float startRadius = 0f;
     [SerializeField] float endRadius   = 100f;
@@ -49,6 +77,7 @@ public class SceneTransitionTrigger : MonoBehaviour
         }
 
         hasTriggered = true;
+        radiusFinished = true;
         drmGameObject.radius = endRadius;
     }
     [SerializeField] float opacityDuration    = 5f;
@@ -67,7 +96,7 @@ public class SceneTransitionTrigger : MonoBehaviour
             elapsedTime            += Time.deltaTime;
             yield return null;
         }
-
+        opacityFinished = true;
         hasTriggered           = true;
         ptLayer.textureOpacity = endOpacity;
     }
