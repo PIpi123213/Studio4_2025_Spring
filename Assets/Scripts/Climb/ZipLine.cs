@@ -15,16 +15,17 @@ public class ZipLine : MonoBehaviour
     public float rotationSpeed = 30f;      // 旋转速度（度/秒）
    // 滑索器 (滑索器物体)
     public Transform[] waypoints;
-    public XRGrabInteractable grabInteractable;
+    public CustomClimbInteractable grabInteractable;
     private IXRSelectInteractor playerInteractor;
-    private bool isSliding = false;
+    public bool isSliding = false;
+   
     private XRInteractionManager interactionManager;
     private InteractionLayerMask originalLayer;
     private Quaternion[] waypointRotations;
     private bool isDone=false;
     private Vector3 initialPlayerOffset; // 记录玩家和滑索器之间的初始偏移量
     public HandPoseSlider handPoseSlider;
-    public DynamicMoveProvider dynamicMoveProvider;
+    public CustomClimbProvider climbProvider;
     private void Start()
     {
         PrecalculateWaypointRotations();
@@ -50,9 +51,8 @@ public class ZipLine : MonoBehaviour
         if (isSliding||isDone) return;
 
         playerInteractor = args.interactorObject as IXRSelectInteractor;
-
-        dynamicMoveProvider.useGravity = false;
-
+        
+     
         if (playerInteractor != null)
         {
             if (grabInteractable.interactorsSelecting.Count == 2 && !isDone)
@@ -82,7 +82,7 @@ public class ZipLine : MonoBehaviour
         {
             if (grabInteractable.interactorsSelecting.Count == 0 )
             {
-                dynamicMoveProvider.useGravity = true;
+              
             }
 
 
@@ -140,6 +140,7 @@ public class ZipLine : MonoBehaviour
         {
             initialPlayerOffset = playerTransform.position - zipLineHandler.position;
         }
+        //设置为zipline子物体
         Transform originalParent = playerTransform.parent;
         playerTransform.SetParent(zipLineHandler);
         // 初始化：移动到第一个点
@@ -199,7 +200,7 @@ public class ZipLine : MonoBehaviour
         handPoseSlider.ProcessPendingExitEvents();
         // **恢复交互**
         //grabInteractable.interactionLayers = originalLayer;
-        dynamicMoveProvider.useGravity = true;
+        //dynamicMoveProvider.useGravity = true;
         // **强制释放玩家**
         var interactors = new List<IXRSelectInteractor>(grabInteractable.interactorsSelecting);
         foreach (var interactor in interactors)

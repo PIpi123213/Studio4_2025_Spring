@@ -35,7 +35,9 @@ public class HandPoseSlider : MonoBehaviour
 
     void Start()
     {
-        XRGrabInteractable grabInteractable = GetComponent<XRGrabInteractable>();
+        //XRGrabInteractable grabInteractable = GetComponent<XRGrabInteractable>();
+        CustomClimbInteractable grabInteractable = GetComponent<CustomClimbInteractable>();
+
 
         grabInteractable.selectEntered.AddListener(SetupPose);
         grabInteractable.selectExited.AddListener(UnSetPose);
