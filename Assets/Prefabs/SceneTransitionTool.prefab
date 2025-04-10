@@ -44,14 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92de4220c61c9f6449f2a9668f90cd1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 102
+  radius: 4.7
   intensity: 1
   noiseStrength: 5
   edgeSize: 2
   ringCount: 3
   frequency: 10
   phaseSpeed: 2
-  currentPhase: 32.80327
+  currentPhase: 11.114265
   smooth: 3
   displayAllProperties: 0
   maskShape: 2
@@ -149,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4908828012278212395}
   m_Layer: 0
-  m_Name: ------------------------- (2)
+  m_Name: '------------------------ '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,7 +180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1870124425337926636}
   m_Layer: 0
-  m_Name: ------------------------- (1)
+  m_Name: '------------------------- '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -248,7 +248,7 @@ MonoBehaviour:
   shaderData_Position:
   - {x: 0, y: 0, z: 0, w: 0}
   shaderData_Radius:
-  - 102
+  - 4.7
   shaderData_Intensity:
   - 1
   shaderData_EdgeSize:
@@ -256,7 +256,7 @@ MonoBehaviour:
   shaderData_RingCount:
   - 3
   shaderData_Phase:
-  - 32.80327
+  - 10.447598
   shaderData_Frequency:
   - 10
   shaderData_Smooth:
