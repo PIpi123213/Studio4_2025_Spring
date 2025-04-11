@@ -14,7 +14,7 @@ public class SceneTransitionTrigger : MonoBehaviour
     bool hasTriggered = false;
     private bool radiusFinished =false;
     private bool opacityFinished = false;
-
+    public Camera playercamera;
 
     void Start()
     {
@@ -82,7 +82,7 @@ public class SceneTransitionTrigger : MonoBehaviour
             ptLayer.enabled = false;
             Destroy(ptLayer);
         }
-        Camera.main.clearFlags = CameraClearFlags.Skybox;
+        playercamera.clearFlags = CameraClearFlags.Skybox;
 
         hasTriggered = true;
         radiusFinished = true;
