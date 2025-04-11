@@ -305,7 +305,7 @@ Material:
     - _IceScale: 1
     - _IndentDepth: 0.25
     - _IndentStrength: 1.5
-    - _LightHardness: 0.636
+    - _LightHardness: 0.581
     - _LightIntensity: 1.24
     - _LightOffset: 0.224
     - _LittleSpecForce: 3
@@ -400,7 +400,7 @@ Material:
     - _CracksStrength: {r: -1.04, g: 0.125, b: -0.13, a: 0.1}
     - _Emission: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FogColor: {r: 1, g: 0.7063986, b: 0.45911944, a: 1}
+    - _FogColor: {r: 1, g: 0.5368472, b: 0.14779866, a: 1}
     - _FogDirection: {r: -1.83, g: 0.3, b: -4.58, a: 0}
     - _IceTint: {r: 0.6745098, g: 0.47506455, b: 0.34901962, a: 1}
     - _IceTrail: {r: 1, g: 0.83357865, b: 0.7688679, a: 1}
@@ -408,9 +408,9 @@ Material:
     - _ParalaxColor: {r: 0, g: 0, b: 0, a: 1}
     - _ParallaxColor: {r: 1, g: 1, b: 1, a: 1}
     - _ParallaxStrength: {r: 0, g: 0.125, b: -0.13, a: 0.1}
-    - _ProjectedShadowColor: {r: 1, g: 0.4550916, b: 0.28930813, a: 1}
+    - _ProjectedShadowColor: {r: 0.6037736, g: 0.55061114, b: 0.60286254, a: 1}
     - _ReflectionColor: {r: 0.009433985, g: 0.009433985, b: 0.009433985, a: 0.8}
-    - _RimColor: {r: 0.3679245, g: 0.27521214, b: 0.14809537, a: 1}
+    - _RimColor: {r: 0.11320752, g: 0.0656129, b: 0.043431807, a: 1}
     - _RockTint: {r: 0.94509804, g: 0.6733689, b: 0.22745097, a: 1}
     - _RockTrail: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
