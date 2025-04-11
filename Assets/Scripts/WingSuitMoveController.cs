@@ -13,6 +13,7 @@ public class WingSuitMoveController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
 
+        //生成尾翼
         trailRenderer = gameObject.AddComponent<TrailRenderer>();
         trailRenderer.time       = 100.0f;
         trailRenderer.startWidth = 0.5f;
@@ -62,26 +63,8 @@ public class WingSuitMoveController : MonoBehaviour
         rb.MoveRotation(targetRotation);
     }
 
-    [SerializeField] private float correctiveForce = 1000f;
-    private Coroutine correctiveForceCoroutine;
-    private IEnumerator ApplyCorrectiveForce(Vector3 direction, float duration)
-    {
-        float elapsedTime = 0f;
-        Quaternion initialRotation = rb.rotation;
-        Quaternion targetRotation  = Quaternion.LookRotation(direction);
-
-        while (elapsedTime < duration)
-        {
-            float t = elapsedTime / duration;
-            rb.velocity = rb.velocity + direction * correctiveForce * t;
-            rb.MoveRotation(Quaternion.Slerp(initialRotation, targetRotation, t));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        rb.MoveRotation(targetRotation);
-    }
-
-    private void OnTriggerEnter(Collider other)
+    //碰撞物体检测以及转向
+    private void OnTriggerEnter(Collider other)//检测
     {
         Debug.Log("Detected object: " + other.name);
         // 计算远离物体的方向；这里可以依据需求调整策略
@@ -89,8 +72,7 @@ public class WingSuitMoveController : MonoBehaviour
         // 启动协程平滑转向，同时禁用控制器输入旋转
         StartCoroutine(SmoothRotateAway(directionAway, 2f));
     }
-
-    private IEnumerator SmoothRotateAway(Vector3 direction, float duration)
+    private IEnumerator SmoothRotateAway(Vector3 direction, float duration)//转向
     {
         isRotatingAway = true;
 

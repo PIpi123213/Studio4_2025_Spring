@@ -485,6 +485,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4071863491954017680, guid: 79363cb8a46d597478eb47fc81f5409f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5888552190278476841, guid: 79363cb8a46d597478eb47fc81f5409f,
         type: 3}
       propertyPath: m_IsActive
@@ -10966,7 +10971,7 @@ PrefabInstance:
     - target: {fileID: 2041587699526827772, guid: b8135b4450f87144b901efd8c003ea40,
         type: 3}
       propertyPath: radius
-      value: 281
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 2041587699526827772, guid: b8135b4450f87144b901efd8c003ea40,
         type: 3}
@@ -10991,7 +10996,7 @@ PrefabInstance:
     - target: {fileID: 2041587699526827772, guid: b8135b4450f87144b901efd8c003ea40,
         type: 3}
       propertyPath: currentPhase
-      value: 41.382984
+      value: 69.83382
       objectReference: {fileID: 0}
     - target: {fileID: 2041587699526827772, guid: b8135b4450f87144b901efd8c003ea40,
         type: 3}
@@ -14469,7 +14474,7 @@ PrefabInstance:
     - target: {fileID: 7113887442670437911, guid: da9dba1ec2c511945a513efb845d2388,
         type: 3}
       propertyPath: RadiusDuration
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7113887442670437911, guid: da9dba1ec2c511945a513efb845d2388,
         type: 3}

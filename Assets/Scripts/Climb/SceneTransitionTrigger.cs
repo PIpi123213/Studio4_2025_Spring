@@ -75,6 +75,10 @@ public class SceneTransitionTrigger : MonoBehaviour
             // 使用非线性插值因子
             float t = Mathf.Pow(elapsedTime / RadiusDuration, 2); // 由慢到快
             drmGameObject.radius =  Mathf.Lerp(startRadius, endRadius, t);
+            if (drmGameObject.radius>220)
+            {
+                playercamera.clearFlags = CameraClearFlags.Skybox;
+            }
             elapsedTime          += Time.deltaTime;
             yield return null;
         }
@@ -84,7 +88,6 @@ public class SceneTransitionTrigger : MonoBehaviour
             ptLayer.enabled = false;
             Destroy(ptLayer);
         }
-        playercamera.clearFlags = CameraClearFlags.Skybox;
 
         hasTriggered = true;
         radiusFinished = true;
