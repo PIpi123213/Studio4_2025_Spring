@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
-using UnityEngine.InputSystem.iOS;
+
 using static Oculus.Interaction.GrabAPI.FingerPalmGrabAPI;
 
 public class handDataPose : MonoBehaviour
