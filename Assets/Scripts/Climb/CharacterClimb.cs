@@ -32,11 +32,11 @@ public class CharacterClimb : MonoBehaviour
         if (climbProvider == null || dynamicMoveProvider == null)
             return;
 
-        // 检测攀爬状态
+      /*  // 检测攀爬状态
         bool isClimbing = climbProvider.locomotionPhase == LocomotionPhase.Moving ||
                           climbProvider.locomotionPhase == LocomotionPhase.Started || zipline.isSliding;
 
         // 如果正在攀爬，关闭重力；否则开启重力
-        dynamicMoveProvider.useGravity = !isClimbing;
+        dynamicMoveProvider.useGravity = !isClimbing;*/
     }
 }
