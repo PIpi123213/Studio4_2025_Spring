@@ -26,7 +26,7 @@ public class SceneTransitionTrigger : MonoBehaviour
     }
     private void Update()
     {
-      
+
     }
     private void OnSelectEnter(SelectEnterEventArgs args)
     {
@@ -38,7 +38,7 @@ public class SceneTransitionTrigger : MonoBehaviour
             //StartCoroutine(AnimateRadius());
             //StartCoroutine(AnimateOpacity());
             StartCoroutine(RunBothAnimations());
-       
+
         }
     }
     private IEnumerator RunBothAnimations()
@@ -51,11 +51,11 @@ public class SceneTransitionTrigger : MonoBehaviour
         // 等待两者完成（总时间取最大值）
         yield return radiusRoutine;
         yield return opacityRoutine;
-      
+
         MoveManager.Instance.OnSceneIn();//记录位置
         // 完成后执行场景切换或其他逻辑
         Debug.Log("All animations completed!");
-       
+
     }
 
 
@@ -75,6 +75,13 @@ public class SceneTransitionTrigger : MonoBehaviour
             elapsedTime          += Time.deltaTime;
             yield return null;
         }
+        // 示例代码：禁用Passthrough后恢复设置
+        if (ptLayer != null)
+        {
+            ptLayer.enabled = false;
+            Destroy(ptLayer);
+        }
+        Camera.main.clearFlags = CameraClearFlags.Skybox;
 
         hasTriggered = true;
         radiusFinished = true;
