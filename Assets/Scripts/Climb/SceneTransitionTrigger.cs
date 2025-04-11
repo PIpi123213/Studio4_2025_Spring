@@ -62,7 +62,7 @@ public class SceneTransitionTrigger : MonoBehaviour
     [SerializeField] float RadiusDuration    = 5f;
     [SerializeField] float startRadius = 0f;
     [SerializeField] float endRadius   = 100f;
-    
+
 
     private IEnumerator AnimateRadius()
     {
@@ -72,7 +72,9 @@ public class SceneTransitionTrigger : MonoBehaviour
 
         while (elapsedTime < RadiusDuration)
         {
-            drmGameObject.radius =  Mathf.Lerp(startRadius, endRadius, elapsedTime / RadiusDuration);
+            // 使用非线性插值因子
+            float t = Mathf.Pow(elapsedTime / RadiusDuration, 2); // 由慢到快
+            drmGameObject.radius =  Mathf.Lerp(startRadius, endRadius, t);
             elapsedTime          += Time.deltaTime;
             yield return null;
         }
