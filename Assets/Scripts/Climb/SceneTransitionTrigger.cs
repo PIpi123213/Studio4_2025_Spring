@@ -62,6 +62,7 @@ public class SceneTransitionTrigger : MonoBehaviour
     [SerializeField] float RadiusDuration    = 5f;
     [SerializeField] float startRadius = 0f;
     [SerializeField] float endRadius   = 100f;
+    
 
     private IEnumerator AnimateRadius()
     {
