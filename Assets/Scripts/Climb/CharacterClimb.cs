@@ -20,6 +20,10 @@ public class CharacterClimb : MonoBehaviour
         {
             Debug.LogError("DynamicMoveProvider Œ¥’“µΩ£°");
         }
+        if(zipline == null)
+        {
+            Debug.LogError("zipline Œ¥’“µΩ£°");
+        }
     }
 
     // Update is called once per frame

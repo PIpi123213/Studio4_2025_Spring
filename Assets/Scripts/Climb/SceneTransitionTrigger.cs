@@ -14,7 +14,7 @@ public class SceneTransitionTrigger : MonoBehaviour
     bool hasTriggered = false;
     private bool radiusFinished =false;
     private bool opacityFinished = false;
-
+    public Camera playercamera;
 
     void Start()
     {
@@ -26,7 +26,7 @@ public class SceneTransitionTrigger : MonoBehaviour
     }
     private void Update()
     {
-      
+
     }
     private void OnSelectEnter(SelectEnterEventArgs args)
     {
@@ -38,7 +38,7 @@ public class SceneTransitionTrigger : MonoBehaviour
             //StartCoroutine(AnimateRadius());
             //StartCoroutine(AnimateOpacity());
             StartCoroutine(RunBothAnimations());
-       
+
         }
     }
     private IEnumerator RunBothAnimations()
@@ -51,17 +51,18 @@ public class SceneTransitionTrigger : MonoBehaviour
         // 等待两者完成（总时间取最大值）
         yield return radiusRoutine;
         yield return opacityRoutine;
-      
+
         MoveManager.Instance.OnSceneIn();//记录位置
         // 完成后执行场景切换或其他逻辑
         Debug.Log("All animations completed!");
-       
+
     }
 
 
     [SerializeField] float RadiusDuration    = 5f;
     [SerializeField] float startRadius = 0f;
     [SerializeField] float endRadius   = 100f;
+
 
     private IEnumerator AnimateRadius()
     {
@@ -71,9 +72,21 @@ public class SceneTransitionTrigger : MonoBehaviour
 
         while (elapsedTime < RadiusDuration)
         {
-            drmGameObject.radius =  Mathf.Lerp(startRadius, endRadius, elapsedTime / RadiusDuration);
+            // 使用非线性插值因子
+            float t = Mathf.Pow(elapsedTime / RadiusDuration, 2); // 由慢到快
+            drmGameObject.radius =  Mathf.Lerp(startRadius, endRadius, t);
+            if (drmGameObject.radius>220)
+            {
+                playercamera.clearFlags = CameraClearFlags.Skybox;
+            }
             elapsedTime          += Time.deltaTime;
             yield return null;
+        }
+        // 示例代码：禁用Passthrough后恢复设置
+        if (ptLayer != null)
+        {
+            ptLayer.enabled = false;
+            Destroy(ptLayer);
         }
 
         hasTriggered = true;

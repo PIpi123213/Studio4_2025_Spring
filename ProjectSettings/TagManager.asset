@@ -6,14 +6,15 @@ TagManager:
   tags:
   - Left Hand
   - Right Hand
+  - SamplesInfoPanel
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
+  - ClimbPoints
   - 
   - Rock
   - 
