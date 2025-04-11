@@ -117,9 +117,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1253126192427249648}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55494530a575d50468f8cd5059bcbd23, type: 3}
+  m_Script: {fileID: 11500000, guid: 713d5d08b70f08343879284d22edf32b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drmGameObject: {fileID: 0}
+  ptLayer: {fileID: 0}
+  RadiusDuration: 5
+  startRadius: 0
+  endRadius: 100
+  opacityDuration: 5
+  startOpacity: 1
+  endOpacity: 0
 --- !u!54 &5072223060565594568
 Rigidbody:
   m_ObjectHideFlags: 0

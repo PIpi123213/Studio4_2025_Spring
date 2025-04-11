@@ -24,13 +24,21 @@ public class SceneTransitionManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             MoveManager.Instance.OnSceneIn();//记录位置
-            MoveManager.Instance.OnSceneOut();
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneTransitionManager.Instance.GoToScene(currentScene.name);
-
+            //MoveManager.Instance.OnSceneOut();
+            /*Scene currentScene = SceneManager.GetActiveScene();
+            SceneTransitionManager.Instance.GoToScene(currentScene.name);*/
+            GoToScene("New Scene");
+           
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            MoveManager.Instance.OnSceneIn();//记录位置
+            //MoveManager.Instance.OnSceneOut();
+            /*Scene currentScene = SceneManager.GetActiveScene();
+            SceneTransitionManager.Instance.GoToScene(currentScene.name);*/
+            GoToScene("Climb_Test 1");
 
         }
-
 
 
 

@@ -1682,7 +1682,7 @@ GameObject:
   - component: {fileID: 693917539510342991}
   - component: {fileID: 3178535525395501443}
   - component: {fileID: 595077440277096756}
-  - component: {fileID: 3232288310722941286}
+  - component: {fileID: 1908496748740485888}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Untagged
@@ -1700,7 +1700,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7375838, z: 0, w: 0.67525566}
   m_LocalPosition: {x: -1.75, y: -0.026000023, z: -0.696}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4184420467424310902}
@@ -1820,7 +1820,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1
-  m_Radius: 0.12
+  m_Radius: 0.06
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -1855,6 +1855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   climbProvider: {fileID: 3178535525395501443}
   dynamicMoveProvider: {fileID: 1092096720738179814}
+  zipline: {fileID: 0}
 --- !u!114 &3178535525395501443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1891,7 +1892,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movementData: {fileID: 11400000, guid: 9da6ab7b7a5e47745ac014cf8f97b1b7, type: 2}
   TrackingObject: {fileID: 8507777013485689724}
---- !u!114 &3232288310722941286
+--- !u!114 &1908496748740485888
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1900,7 +1901,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7532603333497202856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca49ce89a7a4e3049ab9b978578436f5, type: 3}
+  m_Script: {fileID: 11500000, guid: d65b12109c49a7c41ac074cb04127621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8242356636554967011
@@ -2256,7 +2257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: e47682b9-c270-40b1-b16d-90b627a5ce1b
-  instanceId: 8c515058-d298-445b-8c21-40e8f01997a8
+  instanceId: 591f2262-007d-480a-b562-e8e292a23e0a
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -2344,7 +2345,7 @@ MonoBehaviour:
   requestScenePermissionOnStartup: 0
   requestRecordAudioPermissionOnStartup: 0
   _localDimming: 1
-  _trackingOriginType: 2
+  _trackingOriginType: 1
   usePositionTracking: 1
   useRotationTracking: 1
   useIPDInPositionTracking: 1

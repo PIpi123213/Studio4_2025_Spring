@@ -1,18 +1,22 @@
-using UnityEngine.Audio;
-using System;
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
-//Credit to Brackeys youtube tutorial on Audio managers, as the majority of this code and learning how to use it was made by him.
 [System.Serializable]
 public class Sound
 {
     public string name;
     public AudioClip clip;
-    [Range(0,1)]
+
+    [Range(0, 1)]
     public float volume = 1;
-    [Range(-3,3)]
+
+    [Range(-3, 3)]
     public float pitch = 1;
+
     public bool loop = false;
+
+    [HideInInspector]
     public AudioSource source;
 
     public Sound()
@@ -25,10 +29,12 @@ public class Sound
 
 public class AudioManager : MonoBehaviour
 {
-    public Sound[] sounds;
+    public Sound[] bgmSounds;
+    public Sound[] sfxSounds;
+
+    private Dictionary<string, Sound> soundMap = new Dictionary<string, Sound>();
 
     public static AudioManager instance;
-    //AudioManager
 
     void Awake()
     {
@@ -42,23 +48,32 @@ public class AudioManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        InitSounds(bgmSounds);
+        InitSounds(sfxSounds);
+    }
+
+    void InitSounds(Sound[] sounds)
+    {
         foreach (Sound s in sounds)
         {
-            if(!s.source)
+            if (!s.source)
                 s.source = gameObject.AddComponent<AudioSource>();
 
             s.source.clip = s.clip;
-
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
+
+            if (!soundMap.ContainsKey(s.name))
+                soundMap.Add(s.name, s);
+            else
+                Debug.LogWarning("Duplicate sound name found: " + s.name);
         }
     }
 
-    public void Play(string name)
+    public void PlayAudio(string name)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
+        if (!soundMap.TryGetValue(name, out Sound s))
         {
             Debug.LogWarning("Sound: " + name + " not found");
             return;
@@ -67,10 +82,12 @@ public class AudioManager : MonoBehaviour
         s.source.Play();
     }
 
-    public void Stop(string name)
+    public void StopAudio(string name)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
-
-        s.source.Stop();
+        if (soundMap.TryGetValue(name, out Sound s))
+        {
+            s.source.Stop();
+        }
     }
+    
 }
