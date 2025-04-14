@@ -10,6 +10,7 @@ public class CharacterClimb : MonoBehaviour
     public CustomClimbProvider climbProvider;
     public DynamicMoveProvider dynamicMoveProvider;
     public ZipLine zipline;
+    public static bool isClimbing = false;
     void Start()
     {
         if (climbProvider == null)
@@ -32,11 +33,13 @@ public class CharacterClimb : MonoBehaviour
         if (climbProvider == null || dynamicMoveProvider == null)
             return;
 
-      /*  // 检测攀爬状态
-        bool isClimbing = climbProvider.locomotionPhase == LocomotionPhase.Moving ||
+        // 检测攀爬状态
+        isClimbing = climbProvider.locomotionPhase == LocomotionPhase.Moving ||
                           climbProvider.locomotionPhase == LocomotionPhase.Started || zipline.isSliding;
 
+
+
         // 如果正在攀爬，关闭重力；否则开启重力
-        dynamicMoveProvider.useGravity = !isClimbing;*/
+        //dynamicMoveProvider.useGravity = !isClimbing;
     }
 }
