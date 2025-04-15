@@ -45,7 +45,9 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    /*
     [SerializeField] GameObject eventManager; // 事件管理器引用
+    */
     
     private void OnEnable()
     {

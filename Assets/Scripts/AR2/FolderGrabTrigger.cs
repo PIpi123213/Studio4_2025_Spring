@@ -1,14 +1,14 @@
-using AmazingAssets.DynamicRadialMasks;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-using System.Collections;
 
-public class PhotoGrabTrigger : MonoBehaviour
+public class FolderGrabTrigger : MonoBehaviour
 {
     private XRGrabInteractable grabInteractable;
     private bool hasTriggered = false;
     
-    public const string OnPhotoGrabbed = "OnPhotoGrabbed";
+    public const string OnFolderGrabbed = "OnFolderGrabbed";
     
     void Start()
     {
@@ -20,14 +20,14 @@ public class PhotoGrabTrigger : MonoBehaviour
 
     private void OnSelectEnter(SelectEnterEventArgs args)
     {
-        Debug.Log("Photo grabbed!");
+        Debug.Log("Folder grabbed!");
         // 例如：改变材质颜色
-        GetComponent<Renderer>().material.color = Color.red;
+        GetComponent<Renderer>().material.color = Color.blue;
         if (!hasTriggered)
         {
             hasTriggered = true;
             // 触发事件
-            EventManager.Instance.Trigger(OnPhotoGrabbed,"PhotoGrabbed");
+            EventManager.Instance.Trigger(OnFolderGrabbed,"FolderGrabbed");
         }
     }
 
@@ -36,5 +36,4 @@ public class PhotoGrabTrigger : MonoBehaviour
         // 取消订阅事件
         grabInteractable.selectEntered.RemoveListener(OnSelectEnter);
     }
-    
 }
