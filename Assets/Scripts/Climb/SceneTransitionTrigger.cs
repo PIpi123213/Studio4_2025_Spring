@@ -15,7 +15,7 @@ public class SceneTransitionTrigger : MonoBehaviour
     private bool radiusFinished =false;
     private bool opacityFinished = false;
     public Camera playercamera;
-
+    public AttachAnchor attachAnchor;
     void Start()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
@@ -51,6 +51,8 @@ public class SceneTransitionTrigger : MonoBehaviour
         // 等待两者完成（总时间取最大值）
         yield return radiusRoutine;
         yield return opacityRoutine;
+        //动画结束
+        attachAnchor.Attach();
 
         MoveManager.Instance.OnSceneIn();//记录位置
         // 完成后执行场景切换或其他逻辑
