@@ -1,18 +1,18 @@
 using AmazingAssets.DynamicRadialMasks;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-using System.Collections;
-using UnityEngine.SceneManagement;
 
-public class SceneTransitionTrigger : MonoBehaviour
+public class Trigger2 : MonoBehaviour
 {
-    // æŒ‚è½½åœ¨ XRGrabInteractable ç‰©ä½“ä¸Š
+    // Start is called before the first frame update
     private XRGrabInteractable grabInteractable;
     // [SerializeField] private GameObject         DissolveEffectTool;
     [SerializeField] private DRMGameObject drmGameObject;
     [SerializeField] private OVRPassthroughLayer ptLayer;
     bool hasTriggered = false;
-    private bool radiusFinished =false;
+    private bool radiusFinished = false;
     private bool opacityFinished = false;
     public Camera playercamera;
     public AttachAnchor attachAnchor;
@@ -20,15 +20,15 @@ public class SceneTransitionTrigger : MonoBehaviour
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
 
-        // è®¢é˜… Select Enter äº‹ä»¶
+        // ¶©ÔÄ Select Enter ÊÂ¼ş
         grabInteractable.selectEntered.AddListener(OnSelectEnter);
         drmGameObject.radius = 0;
     }
 
     private void OnSelectEnter(SelectEnterEventArgs args)
     {
-        Debug.Log("catch itï¼");
-        // ä¾‹å¦‚ï¼šæ”¹å˜æè´¨é¢œè‰²
+        Debug.Log("catch it£¡");
+        // ÀıÈç£º¸Ä±ä²ÄÖÊÑÕÉ«
         GetComponent<Renderer>().material.color = Color.red;
         if (!hasTriggered)
         {
@@ -39,45 +39,45 @@ public class SceneTransitionTrigger : MonoBehaviour
     }
     private IEnumerator RunBothAnimations()
     {
-        // åŒæ—¶å¯åŠ¨ä¸¤ä¸ªåŠ¨ç”»
+        // Í¬Ê±Æô¶¯Á½¸ö¶¯»­
         hasTriggered = true;
         Coroutine radiusRoutine = StartCoroutine(AnimateRadius());
         Coroutine opacityRoutine = StartCoroutine(AnimateOpacity());
 
-        // ç­‰å¾…ä¸¤è€…å®Œæˆï¼ˆæ€»æ—¶é—´å–æœ€å¤§å€¼ï¼‰
+        // µÈ´ıÁ½ÕßÍê³É£¨×ÜÊ±¼äÈ¡×î´óÖµ£©
         yield return radiusRoutine;
         yield return opacityRoutine;
-        //åŠ¨ç”»ç»“æŸ
+        //¶¯»­½áÊø
         attachAnchor.Attach();
 
-        MoveManager.Instance.OnSceneIn();//è®°å½•ä½ç½®
-        // å®Œæˆåæ‰§è¡Œåœºæ™¯åˆ‡æ¢æˆ–å…¶ä»–é€»è¾‘
+        MoveManager.Instance.OnSceneIn();//¼ÇÂ¼Î»ÖÃ
+        // Íê³ÉºóÖ´ĞĞ³¡¾°ÇĞ»»»òÆäËûÂß¼­
         Debug.Log("All animations completed!");
 
     }
 
-    [SerializeField] float RadiusDuration    = 5f;
+    [SerializeField] float RadiusDuration = 5f;
     [SerializeField] float startRadius = 0f;
-    [SerializeField] float endRadius   = 100f;
+    [SerializeField] float endRadius = 100f;
 
     private IEnumerator AnimateRadius()
     {
 
         float elapsedTime = 0f;
-        
+
         while (elapsedTime < RadiusDuration)
         {
-            // ä½¿ç”¨éçº¿æ€§æ’å€¼å› å­
-            float t = Mathf.Pow(elapsedTime / RadiusDuration, 2); // ç”±æ…¢åˆ°å¿«
-            drmGameObject.radius =  Mathf.Lerp(startRadius, endRadius, t);
-            if (drmGameObject.radius>220)
+            // Ê¹ÓÃ·ÇÏßĞÔ²åÖµÒò×Ó
+            float t = Mathf.Pow(elapsedTime / RadiusDuration, 2); // ÓÉÂıµ½¿ì
+            drmGameObject.radius = Mathf.Lerp(startRadius, endRadius, t);
+            if (drmGameObject.radius > 220)
             {
                 playercamera.clearFlags = CameraClearFlags.Skybox;
             }
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        // ç¤ºä¾‹ä»£ç ï¼šç¦ç”¨Passthroughåæ¢å¤è®¾ç½®
+        // Ê¾Àı´úÂë£º½ûÓÃPassthroughºó»Ö¸´ÉèÖÃ
         if (ptLayer != null)
         {
             ptLayer.enabled = false;
@@ -88,9 +88,9 @@ public class SceneTransitionTrigger : MonoBehaviour
         radiusFinished = true;
         drmGameObject.radius = endRadius;
     }
-    [SerializeField] float opacityDuration    = 5f;
+    [SerializeField] float opacityDuration = 5f;
     [SerializeField] float startOpacity = 1f;
-    [SerializeField] float endOpacity   = 0f;
+    [SerializeField] float endOpacity = 0f;
     private IEnumerator AnimateOpacity()
     {
 
@@ -100,17 +100,17 @@ public class SceneTransitionTrigger : MonoBehaviour
 
         while (elapsedTime < opacityDuration)
         {
-            ptLayer.textureOpacity =  Mathf.Lerp(startOpacity, endOpacity, elapsedTime / opacityDuration);
-            elapsedTime            += Time.deltaTime;
+            ptLayer.textureOpacity = Mathf.Lerp(startOpacity, endOpacity, elapsedTime / opacityDuration);
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
         opacityFinished = true;
-        hasTriggered           = true;
+        hasTriggered = true;
         ptLayer.textureOpacity = endOpacity;
     }
     void OnDestroy()
     {
-        // å–æ¶ˆè®¢é˜…äº‹ä»¶
+        // È¡Ïû¶©ÔÄÊÂ¼ş
         grabInteractable.selectEntered.RemoveListener(OnSelectEnter);
     }
 }
