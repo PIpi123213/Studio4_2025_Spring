@@ -51,15 +51,17 @@ public class DialogueManager : MonoBehaviour
     
     private void OnEnable()
     {
-        if (EventManager.Instance != null)
+        /*if (EventManager.Instance != null)*/
             EventManager.Instance.Subscribe(PhotoGrabTrigger.OnPhotoGrabbed, OnPlayDialogue);
-        else
-            Debug.LogWarning("EventManager.Instance 为空，DialogueManager 订阅失败");;
+            EventManager.Instance.Subscribe(FolderGrabTrigger.OnFolderGrabbed, OnPlayDialogue);
+        /*else
+            Debug.LogWarning("EventManager.Instance 为空，DialogueManager 订阅失败");;*/
     }
 
     private void OnDisable()
     {
         EventManager.Instance.Unsubscribe(PhotoGrabTrigger.OnPhotoGrabbed, OnPlayDialogue);
+        EventManager.Instance.Unsubscribe(FolderGrabTrigger.OnFolderGrabbed, OnPlayDialogue);
     }
 
     private void OnPlayDialogue(object param)
