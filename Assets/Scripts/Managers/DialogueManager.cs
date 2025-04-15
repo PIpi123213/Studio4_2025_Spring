@@ -12,9 +12,9 @@ public class DialogueManager : MonoBehaviour
 
     private Dictionary<string, PlayableDirector> narrationDict;
 
-    // 事件名
+    /*// 事件名
     public const string PlayDialogue = "PlayDialogue";
-    public const string DialogueFinished = "DialogueFinished";
+    public const string DialogueFinished = "DialogueFinished";*/
 
     [Serializable]
     public class NamedNarration
@@ -45,14 +45,19 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    [SerializeField] GameObject eventManager; // 事件管理器引用
+    
     private void OnEnable()
     {
-        EventManager.Instance.Subscribe(PlayDialogue, OnPlayDialogue);
+        if (EventManager.Instance != null)
+            EventManager.Instance.Subscribe(PhotoGrabTrigger.OnPhotoGrabbed, OnPlayDialogue);
+        else
+            Debug.LogWarning("EventManager.Instance 为空，DialogueManager 订阅失败");;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.Unsubscribe(PlayDialogue, OnPlayDialogue);
+        EventManager.Instance.Unsubscribe(PhotoGrabTrigger.OnPhotoGrabbed, OnPlayDialogue);
     }
 
     private void OnPlayDialogue(object param)
@@ -79,6 +84,5 @@ public class DialogueManager : MonoBehaviour
     private void OnDialogueFinished(PlayableDirector _)
     {
         Debug.Log("旁白播放完成！");
-        EventManager.Instance.Trigger(DialogueFinished);
     }
 }
