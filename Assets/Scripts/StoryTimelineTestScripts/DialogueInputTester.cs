@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 
 public class DialogueInputTester : MonoBehaviour
 {
@@ -6,7 +6,7 @@ public class DialogueInputTester : MonoBehaviour
     {
         /*
         Debug.Log("Update");
-        */
+        #1#
         if (Input.GetKeyDown(KeyCode.A))
         {
             Debug.Log("A key pressed");
@@ -25,4 +25,4 @@ public class DialogueInputTester : MonoBehaviour
             EventManager.Instance.Trigger(DialogueManager.PlayDialogue, "D");
         }
     }
-}
+}*/

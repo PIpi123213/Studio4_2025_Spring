@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class SceneTransitionTrigger : MonoBehaviour
 {
     // 挂载在 XRGrabInteractable 物体上
-    private                  XRGrabInteractable grabInteractable;
+    private XRGrabInteractable grabInteractable;
     // [SerializeField] private GameObject         DissolveEffectTool;
     [SerializeField] private DRMGameObject drmGameObject;
     [SerializeField] private OVRPassthroughLayer ptLayer;
@@ -24,10 +24,7 @@ public class SceneTransitionTrigger : MonoBehaviour
         grabInteractable.selectEntered.AddListener(OnSelectEnter);
         drmGameObject.radius = 0;
     }
-    private void Update()
-    {
 
-    }
     private void OnSelectEnter(SelectEnterEventArgs args)
     {
         Debug.Log("catch it！");
@@ -38,7 +35,6 @@ public class SceneTransitionTrigger : MonoBehaviour
             //StartCoroutine(AnimateRadius());
             //StartCoroutine(AnimateOpacity());
             StartCoroutine(RunBothAnimations());
-
         }
     }
     private IEnumerator RunBothAnimations()
@@ -58,18 +54,15 @@ public class SceneTransitionTrigger : MonoBehaviour
 
     }
 
-
     [SerializeField] float RadiusDuration    = 5f;
     [SerializeField] float startRadius = 0f;
     [SerializeField] float endRadius   = 100f;
-
 
     private IEnumerator AnimateRadius()
     {
 
         float elapsedTime = 0f;
-
-
+        
         while (elapsedTime < RadiusDuration)
         {
             // 使用非线性插值因子
@@ -79,7 +72,7 @@ public class SceneTransitionTrigger : MonoBehaviour
             {
                 playercamera.clearFlags = CameraClearFlags.Skybox;
             }
-            elapsedTime          += Time.deltaTime;
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
         // 示例代码：禁用Passthrough后恢复设置
