@@ -18,6 +18,8 @@ public class AnchorPoint : MonoBehaviour
     private bool AisFather = true;
     private bool BisFather = false;
 
+    public static AttachAnchor attachAnchor = null;
+
     void Start()
     {
         if (otherObject == null)
@@ -250,6 +252,8 @@ public class AnchorPoint : MonoBehaviour
                 AisFather= true;
             }
         }
+
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ToggleParenting();
