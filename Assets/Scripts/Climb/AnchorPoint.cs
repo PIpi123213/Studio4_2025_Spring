@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class AnchorPoint : MonoBehaviour
 {
-    public Transform otherObject; // 另一个物体
+    public Transform otherObject;
+    public Transform target;// 另一个物体
     public bool isCurrentParent = true; // 当前是否是父物体
 
     private Collider myCollider;
@@ -15,10 +16,11 @@ public class AnchorPoint : MonoBehaviour
     private Quaternion originalLocalRotation;
     private Vector3 originalLocalScale;
 
-    private bool AisFather = true;
-    private bool BisFather = false;
-
+    private Vector3 initialLocalPosition;
+    private Quaternion initialLocalRotation;
+    private Quaternion initialRotationDifference;
     public static AttachAnchor attachAnchor = null;
+    public Vector3 positionOffset = Vector3.zero;
 
     void Start()
     {
@@ -33,6 +35,12 @@ public class AnchorPoint : MonoBehaviour
         originalLocalPosition = otherObject.localPosition;
         originalLocalRotation = otherObject.localRotation;
         originalLocalScale = otherObject.localScale;
+
+        Vector3 localOffset = target.InverseTransformPoint(transform.position);
+        initialLocalPosition = new Vector3(localOffset.x, 0, localOffset.z);
+
+        // 记录初始旋转差异
+        initialRotationDifference = Quaternion.Inverse(target.rotation) * transform.rotation;
         UpdatePhysicsState();
     }
 
@@ -232,31 +240,62 @@ public class AnchorPoint : MonoBehaviour
     // 示例：按空格键切换
     void Update()
     {
+        if (!CharacterClimb.isStart) return;
+
+
         if (CharacterClimb.isClimbing)
         {
-            if (AisFather)
+            if (isCurrentParent)
             {
                 ToggleParentingB();
-                AisFather = false;
-                BisFather = true;
+                isCurrentParent = false;
             }
+         
           
 
         }
         else
         {
-            if (BisFather)
+            if (!isCurrentParent)
             {
+              
                 ToggleParentingA();
-                BisFather = false;
-                AisFather= true;
+                isCurrentParent = true;
             }
+        
         }
+
+
 
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ToggleParenting();
         }
+    }
+
+
+    void LateUpdate()
+    {
+        if (!isCurrentParent)
+        {
+            // 计算目标的 Y 轴旋转
+            float targetYRotation = target.eulerAngles.y;
+
+            // 创建仅包含 Y 轴旋转的四元数
+            Quaternion rotationY = Quaternion.Euler(0, targetYRotation, 0);
+
+            // 计算新的位置（保持 Y 轴不变）
+            Vector3 newPosition = target.position + rotationY * (initialLocalPosition+ positionOffset);
+            newPosition.y = transform.position.y; // 保持原始 Y 轴位置
+
+            // 应用新的位置
+            transform.position = newPosition;
+
+            // 应用初始旋转差异
+            transform.rotation = rotationY * initialRotationDifference;
+        }
+        // 更新位置
+       
     }
 }

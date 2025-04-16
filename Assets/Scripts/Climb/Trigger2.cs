@@ -16,19 +16,20 @@ public class Trigger2 : MonoBehaviour
     private bool opacityFinished = false;
     public Camera playercamera;
     public AttachAnchor attachAnchor;
+    public GameObject lake;
     void Start()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
 
-        // ¶©ÔÄ Select Enter ÊÂ¼þ
+        // ï¿½ï¿½ï¿½ï¿½ Select Enter ï¿½Â¼ï¿½
         grabInteractable.selectEntered.AddListener(OnSelectEnter);
         drmGameObject.radius = 0;
     }
 
     private void OnSelectEnter(SelectEnterEventArgs args)
     {
-        Debug.Log("catch it£¡");
-        // ÀýÈç£º¸Ä±ä²ÄÖÊÑÕÉ«
+        Debug.Log("catch itï¿½ï¿½");
+        // ï¿½ï¿½ï¿½ç£ºï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«
         GetComponent<Renderer>().material.color = Color.red;
         if (!hasTriggered)
         {
@@ -37,22 +38,29 @@ public class Trigger2 : MonoBehaviour
             StartCoroutine(RunBothAnimations());
         }
     }
+    [SerializeField]float skyboxFadeDuration = 10f;
     private IEnumerator RunBothAnimations()
     {
-        // Í¬Ê±Æô¶¯Á½¸ö¶¯»­
+        // Í¬Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         hasTriggered = true;
-        Coroutine radiusRoutine = StartCoroutine(AnimateRadius());
-        Coroutine opacityRoutine = StartCoroutine(AnimateOpacity());
 
-        // µÈ´ýÁ½ÕßÍê³É£¨×ÜÊ±¼äÈ¡×î´óÖµ£©
+        Coroutine radiusRoutine  = StartCoroutine(AnimateRadius());
+        Coroutine opacityRoutine = StartCoroutine(AnimateOpacity());
+        Coroutine skyboxRoutine  = StartCoroutine(AnimateSkyboxExposure(0f, 1f, skyboxFadeDuration));
+        attachAnchor.Attach();
+        // ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½Ê±ï¿½ï¿½È¡ï¿½ï¿½ï¿½Öµï¿½ï¿½
         yield return radiusRoutine;
         yield return opacityRoutine;
-        //¶¯»­½áÊø
-        attachAnchor.Attach();
+        yield return skyboxRoutine;
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-        MoveManager.Instance.OnSceneIn();//¼ÇÂ¼Î»ÖÃ
-        // Íê³ÉºóÖ´ÐÐ³¡¾°ÇÐ»»»òÆäËûÂß¼­
+        lake.SetActive(true);
+        MoveManager.Instance.OnSceneIn();//ï¿½ï¿½Â¼Î»ï¿½ï¿½
+        // ï¿½ï¿½Éºï¿½Ö´ï¿½Ð³ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
         Debug.Log("All animations completed!");
+
+        gameObject.SetActive(false);
+
 
     }
 
@@ -67,17 +75,22 @@ public class Trigger2 : MonoBehaviour
 
         while (elapsedTime < RadiusDuration)
         {
-            // Ê¹ÓÃ·ÇÏßÐÔ²åÖµÒò×Ó
-            float t = Mathf.Pow(elapsedTime / RadiusDuration, 2); // ÓÉÂýµ½¿ì
+            // Ê¹ï¿½Ã·ï¿½ï¿½ï¿½ï¿½Ô²ï¿½Öµï¿½ï¿½ï¿½ï¿½
+            float t = Mathf.Pow(elapsedTime / RadiusDuration, 2); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             drmGameObject.radius = Mathf.Lerp(startRadius, endRadius, t);
-            if (drmGameObject.radius > 220)
+            if (drmGameObject.radius > 200)
             {
                 playercamera.clearFlags = CameraClearFlags.Skybox;
+                float extraSpeedFactor = 5f; // ï¿½É¸ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù±ï¿½ï¿½ï¿½
+                float extraT = Mathf.Pow(elapsedTime / RadiusDuration, 2) * extraSpeedFactor;
+
+                // ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½Ä°ë¾¶ï¿½ï¿½ï¿½ï¿½
+                drmGameObject.radius += Mathf.Lerp(0, endRadius - startRadius, extraT) * Time.deltaTime;
             }
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        // Ê¾Àý´úÂë£º½ûÓÃPassthroughºó»Ö¸´ÉèÖÃ
+        // Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ë£ºï¿½ï¿½ï¿½ï¿½Passthroughï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½
         if (ptLayer != null)
         {
             ptLayer.enabled = false;
@@ -108,9 +121,29 @@ public class Trigger2 : MonoBehaviour
         hasTriggered = true;
         ptLayer.textureOpacity = endOpacity;
     }
+
+    private IEnumerator AnimateSkyboxExposure(float startExposure, float endExposure, float duration)
+    {
+        if (RenderSettings.skybox.HasProperty("_Exposure"))
+        {
+            float elapsedTime = 0f;
+
+            while (elapsedTime < duration)
+            {
+                float exposure = Mathf.Lerp(startExposure, endExposure, elapsedTime / duration);
+                RenderSettings.skybox.SetFloat("_Exposure", exposure);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            // ç¡®ä¿æœ€ç»ˆæ›å…‰åº¦ä¸ºç›®æ ‡å€¼
+            RenderSettings.skybox.SetFloat("_Exposure", endExposure);
+        }
+    }
+
     void OnDestroy()
     {
-        // È¡Ïû¶©ÔÄÊÂ¼þ
+        // È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
         grabInteractable.selectEntered.RemoveListener(OnSelectEnter);
     }
 }
