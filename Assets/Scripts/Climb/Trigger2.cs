@@ -16,7 +16,6 @@ public class Trigger2 : MonoBehaviour
     private bool opacityFinished = false;
     public Camera playercamera;
     public AttachAnchor attachAnchor;
-    public GameObject lake;
     void Start()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
@@ -50,14 +49,12 @@ public class Trigger2 : MonoBehaviour
         yield return radiusRoutine;
         yield return opacityRoutine;
         //动画结束
+      
 
-        lake.SetActive(true);
         MoveManager.Instance.OnSceneIn();//记录位置
         // 完成后执行场景切换或其他逻辑
         Debug.Log("All animations completed!");
-        
         gameObject.SetActive(false);
-
 
     }
 
@@ -75,14 +72,9 @@ public class Trigger2 : MonoBehaviour
             // 使用非线性插值因子
             float t = Mathf.Pow(elapsedTime / RadiusDuration, 2); // 由慢到快
             drmGameObject.radius = Mathf.Lerp(startRadius, endRadius, t);
-            if (drmGameObject.radius > 200)
+            if (drmGameObject.radius > 220)
             {
                 playercamera.clearFlags = CameraClearFlags.Skybox;
-                float extraSpeedFactor = 5f; // 可根据需要调整加速倍数
-                float extraT = Mathf.Pow(elapsedTime / RadiusDuration, 2) * extraSpeedFactor;
-
-                // 增加额外的半径增长
-                drmGameObject.radius += Mathf.Lerp(0, endRadius - startRadius, extraT) * Time.deltaTime;
             }
             elapsedTime += Time.deltaTime;
             yield return null;
