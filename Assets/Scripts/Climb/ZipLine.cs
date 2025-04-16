@@ -22,10 +22,12 @@ public class ZipLine : MonoBehaviour
     private XRInteractionManager interactionManager;
     private InteractionLayerMask originalLayer;
     private Quaternion[] waypointRotations;
-    private bool isDone=false;
+    public static bool isDone=false;
     private Vector3 initialPlayerOffset; // 记录玩家和滑索器之间的初始偏移量
     public HandPoseSlider handPoseSlider;
     public CustomClimbProvider climbProvider;
+
+    public AttachAnchor attachAnchor;
     private void Start()
     {
         PrecalculateWaypointRotations();
@@ -58,7 +60,7 @@ public class ZipLine : MonoBehaviour
             if (grabInteractable.interactorsSelecting.Count == 2 && !isDone)
             {
                 isSliding = true;
-
+                attachAnchor.ResetAnchorPoint();
                 // **禁用玩家松手**
                 //grabInteractable.interactionLayers = 0; // 禁用所有交互层
                 handPoseSlider.ziplineActive = true;

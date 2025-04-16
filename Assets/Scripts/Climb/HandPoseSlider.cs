@@ -161,7 +161,7 @@ public class HandPoseSlider : MonoBehaviour
         if (handData.type == handDataPose.HandModelType.Right && rightHandPose != null)
         {
             // 此处的参数可以根据实际情况调整
-            StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right));
+            //StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right));
             
                 rightHandPose.gameObject.SetActive(false);
                 rightHandModel_Geom.SetActive(true);
@@ -169,7 +169,7 @@ public class HandPoseSlider : MonoBehaviour
         }
         else if (handData.type == handDataPose.HandModelType.Left && leftHandPose != null)
         {
-            StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left));
+            //StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left));
             
                 leftHandPose.gameObject.SetActive(false);
                 leftHandModel_Geom.SetActive(true);
