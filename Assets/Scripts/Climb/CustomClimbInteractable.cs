@@ -161,6 +161,8 @@ namespace UnityEngine.XR.Interaction.Toolkit
             base.OnSelectEntered(args);
             if (m_ClimbProvider != null )
                 m_ClimbProvider.StartClimbGrab(this, args.interactorObject);
+
+            if (!CharacterClimb.isStart)  CharacterClimb.isStart = true;
         }
 
         /// <inheritdoc />
