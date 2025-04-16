@@ -36,7 +36,7 @@ public class CharacterClimb : MonoBehaviour
 
         // ºÏ≤‚≈ ≈¿◊¥Ã¨
         isClimbing = climbProvider.locomotionPhase == LocomotionPhase.Moving ||
-                          climbProvider.locomotionPhase == LocomotionPhase.Started || zipline.isSliding;
+                          climbProvider.locomotionPhase == LocomotionPhase.Started || ZipLine.isSliding;
 
 
 
