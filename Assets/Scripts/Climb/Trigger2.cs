@@ -41,18 +41,20 @@ public class Trigger2 : MonoBehaviour
     {
         // 同时启动两个动画
         hasTriggered = true;
+        
         Coroutine radiusRoutine = StartCoroutine(AnimateRadius());
         Coroutine opacityRoutine = StartCoroutine(AnimateOpacity());
-
+        attachAnchor.Attach();
         // 等待两者完成（总时间取最大值）
         yield return radiusRoutine;
         yield return opacityRoutine;
         //动画结束
-        attachAnchor.Attach();
+      
 
         MoveManager.Instance.OnSceneIn();//记录位置
         // 完成后执行场景切换或其他逻辑
         Debug.Log("All animations completed!");
+        gameObject.SetActive(false);
 
     }
 
