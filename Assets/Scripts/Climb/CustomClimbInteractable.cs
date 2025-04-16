@@ -163,7 +163,7 @@ namespace UnityEngine.XR.Interaction.Toolkit
                 m_ClimbProvider.StartClimbGrab(this, args.interactorObject);
 
             if (!CharacterClimb.isStart)  CharacterClimb.isStart = true;
-            if (ZipLine.isSliding) ZipLine.isSliding = false;
+            if (ZipLine.isSliding&&ZipLine.isDone) ZipLine.isSliding = false;
         }
 
         /// <inheritdoc />
