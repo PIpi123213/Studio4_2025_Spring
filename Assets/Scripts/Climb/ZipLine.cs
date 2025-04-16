@@ -17,7 +17,7 @@ public class ZipLine : MonoBehaviour
     public Transform[] waypoints;
     public CustomClimbInteractable grabInteractable;
     private IXRSelectInteractor playerInteractor;
-    public bool isSliding = false;
+    public static bool isSliding = false;
    
     private XRInteractionManager interactionManager;
     private InteractionLayerMask originalLayer;
@@ -196,7 +196,7 @@ public class ZipLine : MonoBehaviour
 
     private void EndZiplineRide()
     {
-        isSliding = false;
+        //isSliding = false;
         isDone = true;
         handPoseSlider.ziplineActive = false;
         handPoseSlider.ProcessPendingExitEvents();
