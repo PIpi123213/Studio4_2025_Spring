@@ -11,6 +11,7 @@ public class CharacterClimb : MonoBehaviour
     public DynamicMoveProvider dynamicMoveProvider;
     public ZipLine zipline;
     public static bool isClimbing = false;
+    public static bool isStart = false;
     void Start()
     {
         if (climbProvider == null)
