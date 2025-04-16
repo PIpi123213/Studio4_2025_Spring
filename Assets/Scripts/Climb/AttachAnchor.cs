@@ -90,8 +90,8 @@ public class AttachAnchor : MonoBehaviour
         ball.target = ball.transform;
         ball2.target = ball2.transform;
         ResetRope(obiRope);
-        obiRope.enabled = false;
-        Rope.SetActive(false);
+        //obiRope.enabled = false;
+        //Rope.SetActive(false);
         hasAttached = false;
     }
     /// <summary>
