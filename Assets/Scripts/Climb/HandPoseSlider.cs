@@ -58,7 +58,7 @@ public class HandPoseSlider : MonoBehaviour
                 // SendHandData(handData, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right);
 
 
-                StartCoroutine(SetHandDataRoutine(handData, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right));
+                //StartCoroutine(SetHandDataRoutine(handData, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right));
 
                
                     rightHandPose.gameObject.SetActive(true);
@@ -71,7 +71,7 @@ public class HandPoseSlider : MonoBehaviour
             {
                 SetLeftHandDataValues(handData, leftHandPose);
                 // SendHandData(handData, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left);
-                StartCoroutine(SetHandDataRoutine(handData, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left));
+                //StartCoroutine(SetHandDataRoutine(handData, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left));
                
                     leftHandPose.gameObject.SetActive(true);
                     leftHandModel_Geom.SetActive(false);
