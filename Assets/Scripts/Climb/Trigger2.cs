@@ -46,12 +46,10 @@ public class Trigger2 : MonoBehaviour
 
         Coroutine radiusRoutine  = StartCoroutine(AnimateRadius());
         Coroutine opacityRoutine = StartCoroutine(AnimateOpacity());
-        Coroutine skyboxRoutine  = StartCoroutine(AnimateSkyboxExposure(0f, 1f, skyboxFadeDuration));
         attachAnchor.Attach();
         // �ȴ�������ɣ���ʱ��ȡ���ֵ��
         yield return radiusRoutine;
         yield return opacityRoutine;
-        yield return skyboxRoutine;
         //��������
 
         lake.SetActive(true);
@@ -120,6 +118,9 @@ public class Trigger2 : MonoBehaviour
         opacityFinished = true;
         hasTriggered = true;
         ptLayer.textureOpacity = endOpacity;
+        Coroutine skyboxRoutine = StartCoroutine(AnimateSkyboxExposure(0f, 1f, skyboxFadeDuration));
+        yield return skyboxRoutine;
+
     }
 
     private IEnumerator AnimateSkyboxExposure(float startExposure, float endExposure, float duration)
