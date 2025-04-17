@@ -82,11 +82,12 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    
     public void PlayAudio(string name)
     {
         if (!soundMap.TryGetValue(name, out Sound s))
         {
-            Debug.LogWarning("Sound: " + name + " not found");
+            Debug.Log("Sound: " + name + " not found");
             return;
         }
         Debug.Log("播放音效: " + name);
@@ -108,6 +109,15 @@ public class AudioManager : MonoBehaviour
         }
     }
     
+
+        public AudioSource audioSource;
+        public AudioClip clip;
+
+        void Start()
+        {
+            // 播放一次音效
+            audioSource.PlayOneShot(clip);
+        }
     
     
 }
