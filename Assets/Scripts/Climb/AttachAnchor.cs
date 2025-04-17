@@ -28,7 +28,12 @@ public class AttachAnchor : MonoBehaviour
         // 初始绑定到自身（可省略，编辑器里也能直接设定）
         ball.target = ball.transform;
         ball2.target = ball2.transform;
-        StartCoroutine(InitializeRope());
+        if (!isFirst)
+        {
+            StartCoroutine(InitializeRope());
+        }
+
+       
         //Rope.SetActive(false);
     }
 
