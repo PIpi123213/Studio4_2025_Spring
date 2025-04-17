@@ -163,7 +163,7 @@ Material:
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
-    - _UVScaleBase: 1
+    - _UVScaleBase: 20
     - _UVScaleNoise: 1
     - _UVSec: 0
     - _UseShadowThreshold: 0
