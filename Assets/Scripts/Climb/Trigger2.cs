@@ -25,6 +25,7 @@ public class Trigger2 : MonoBehaviour
         grabInteractable.selectEntered.AddListener(OnSelectEnter);
         drmGameObject.radius = 0;
         RenderSettings.skybox.SetFloat("_Exposure", 0);
+        lake.SetActive(false);
     }
 
     private void OnSelectEnter(SelectEnterEventArgs args)
