@@ -170,17 +170,23 @@ public class ZipLine : MonoBehaviour
                     currentSpeed * Time.deltaTime
                 );
             
-                zipLineHandler.rotation = Quaternion.RotateTowards(
+                /*zipLineHandler.rotation = Quaternion.RotateTowards(
                   zipLineHandler.rotation,
                   targetRotation,
                   rotationSpeed * Time.deltaTime
-              );
+                );*/
+
+                zipLineHandler.rotation = Quaternion.Lerp(
+                zipLineHandler.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+                );
                 // 同步玩家位置
-              /*  if (playerTransform != null)
-                {
-                    playerTransform.position = zipLineHandler.position + initialPlayerOffset;
-                    playerTransform.rotation = zipLineHandler.rotation * Quaternion.Euler(0, -180, 0);
-                }*/
+                /*  if (playerTransform != null)
+                  {
+                      playerTransform.position = zipLineHandler.position + initialPlayerOffset;
+                      playerTransform.rotation = zipLineHandler.rotation * Quaternion.Euler(0, -180, 0);
+                  }*/
 
                 yield return null;
             }
