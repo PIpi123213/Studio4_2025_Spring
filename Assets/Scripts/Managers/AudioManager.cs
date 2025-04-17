@@ -82,7 +82,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    
+
     public void PlayAudio(string name)
     {
         if (!soundMap.TryGetValue(name, out Sound s))
@@ -108,16 +108,9 @@ public class AudioManager : MonoBehaviour
             s.source.Stop();
         }
     }
-    
 
-        public AudioSource audioSource;
-        public AudioClip clip;
-
-        void Start()
-        {
-            // 播放一次音效
-            audioSource.PlayOneShot(clip);
-        }
-    
-    
+    private void Start()
+    {
+        PlayAudio("LavaBGM");
+    }
 }
