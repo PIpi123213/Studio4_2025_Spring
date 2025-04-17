@@ -24,6 +24,7 @@ public class Trigger2 : MonoBehaviour
         // ���� Select Enter �¼�
         grabInteractable.selectEntered.AddListener(OnSelectEnter);
         drmGameObject.radius = 0;
+        RenderSettings.skybox.SetFloat("_Exposure", 0);
     }
 
     private void OnSelectEnter(SelectEnterEventArgs args)
@@ -89,11 +90,7 @@ public class Trigger2 : MonoBehaviour
             yield return null;
         }
         // ʾ�����룺����Passthrough��ָ�����
-        if (ptLayer != null)
-        {
-            ptLayer.enabled = false;
-            Destroy(ptLayer);
-        }
+
 
         hasTriggered = true;
         radiusFinished = true;
@@ -118,6 +115,11 @@ public class Trigger2 : MonoBehaviour
         opacityFinished = true;
         hasTriggered = true;
         ptLayer.textureOpacity = endOpacity;
+        if (ptLayer != null)
+        {
+            ptLayer.enabled = false;
+            Destroy(ptLayer);
+        }
         Coroutine skyboxRoutine = StartCoroutine(AnimateSkyboxExposure(0f, 1f, skyboxFadeDuration));
         yield return skyboxRoutine;
 
