@@ -10,7 +10,7 @@ namespace UnityEngine.XR.Interaction.Toolkit
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody))]
     [AddComponentMenu("XR/Custom Climb Interactable", 11)]
-  
+
     public class CustomClimbInteractable : XRBaseInteractable
     {
         const float k_DefaultMaxInteractionDistance = 0.1f * 4f;
@@ -97,21 +97,21 @@ namespace UnityEngine.XR.Interaction.Toolkit
 
 
         [Header("X Axis Constraints")]
-        [Tooltip("ÔÊÐíÏò×óÔË¶¯µÄ×î´ó¾àÀë£¨¸º X ·½Ïò£©¡£")]
+        [Tooltip("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¨ï¿½ï¿½ X ï¿½ï¿½ï¿½ò£©¡ï¿½")]
         public float maxLeft = 0.35f*4f;
-        [Tooltip("ÔÊÐíÏòÓÒÔË¶¯µÄ×î´ó¾àÀë£¨Õý X ·½Ïò£©¡£")]
+        [Tooltip("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¨ï¿½ï¿½ X ï¿½ï¿½ï¿½ò£©¡ï¿½")]
         public float maxRight = 0.35f*4f;
 
         [Header("Y Axis Constraints")]
-        [Tooltip("ÔÊÐíÏòÉÏÔË¶¯µÄ×î´ó¾àÀë£¨Õý Y ·½Ïò£©¡£")]
+        [Tooltip("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¨ï¿½ï¿½ Y ï¿½ï¿½ï¿½ò£©¡ï¿½")]
         public float maxUp = 0.35f * 4f;
-        [Tooltip("ÔÊÐíÏòÏÂÔË¶¯µÄ×î´ó¾àÀë£¨¸º Y ·½Ïò£©¡£")]
+        [Tooltip("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¨ï¿½ï¿½ Y ï¿½ï¿½ï¿½ò£©¡ï¿½")]
         public float maxDown = 0.5f*4f;
 
         [Header("Z Axis Constraints")]
-        [Tooltip("ÔÊÐíÏòÇ°ÔË¶¯µÄ×î´ó¾àÀë£¨Õý Z ·½Ïò£©¡£")]
+        [Tooltip("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¨ï¿½ï¿½ Z ï¿½ï¿½ï¿½ò£©¡ï¿½")]
         public float maxForward = 0.1f*4f;
-        [Tooltip("ÔÊÐíÏòºóÔË¶¯µÄ×î´ó¾àÀë£¨¸º Z ·½Ïò£©¡£")]
+        [Tooltip("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¨ï¿½ï¿½ Z ï¿½ï¿½ï¿½ò£©¡ï¿½")]
         public float maxBackward = 0.3f * 4f;
 
 
@@ -137,8 +137,8 @@ namespace UnityEngine.XR.Interaction.Toolkit
         protected override void Awake()
         {
             base.Awake();
-            
-               
+
+
         }
 
         /// <inheritdoc />
@@ -166,7 +166,7 @@ namespace UnityEngine.XR.Interaction.Toolkit
             if (!CharacterClimb.isStart)  CharacterClimb.isStart = true;
             if (ZipLine.isSliding&&ZipLine.isDone) ZipLine.isSliding = false;
             Debug.Log("Rock Climb");
-            int randomIndex = UnityEngine.Random.Range(1, 4);
+            int randomIndex = UnityEngine.Random.Range(1, 8);
             if (transform.gameObject.tag == "Rock")
             {
                 EventManager.Instance.Trigger(OnRockClimb, randomIndex);
