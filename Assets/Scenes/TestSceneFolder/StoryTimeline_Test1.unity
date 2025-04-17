@@ -489,6 +489,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1092096720738179814, guid: 1be2d6d4ce55b014fb94e5809333578e,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7532603333497202856, guid: 1be2d6d4ce55b014fb94e5809333578e,
         type: 3}
       propertyPath: m_Name
@@ -497,7 +502,7 @@ PrefabInstance:
     - target: {fileID: 7532603333497202856, guid: 1be2d6d4ce55b014fb94e5809333578e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8498427153701052716, guid: 1be2d6d4ce55b014fb94e5809333578e,
         type: 3}
@@ -935,6 +940,79 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1001 &548475857
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 845021472074799027, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_Name
+      value: Handles (Climbable)
+      objectReference: {fileID: 0}
+    - target: {fileID: 845021472074799027, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Rock
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370012661363055730, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370012661363055730, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370012661363055730, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370012661363055730, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370012661363055730, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370012661363055730, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370012661363055730, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370012661363055730, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370012661363055730, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370012661363055730, guid: 7967372862ae0b840b337826a0773c0d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7967372862ae0b840b337826a0773c0d, type: 3}
 --- !u!1 &571759015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1218,7 +1296,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1174529303}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -1326,7 +1404,27 @@ MonoBehaviour:
     pitch: 0
     loop: 1
     source: {fileID: 0}
+  - name: "\u6500\u5CA9\u58F01"
+    clip: {fileID: 8300000, guid: 909ab9dd86711694a8fe81921e87ef71, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: "\u6500\u5CA9\u58F02"
+    clip: {fileID: 8300000, guid: a2dcb4b6e6dd4b74189510c567a2bb33, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: "\u6500\u5CA9\u58F03"
+    clip: {fileID: 8300000, guid: af21f5cd4c2033d4e9b2f8c1fa6b43e0, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
   sfxSounds: []
+  audioSource: {fileID: 1174529304}
+  clip: {fileID: 8300000, guid: 637f8f886c853c343ad4f24476317603, type: 3}
 --- !u!4 &1174529306
 Transform:
   m_ObjectHideFlags: 0
@@ -2130,7 +2228,7 @@ PrefabInstance:
     - target: {fileID: 6078759037379035463, guid: 79363cb8a46d597478eb47fc81f5409f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.53
       objectReference: {fileID: 0}
     - target: {fileID: 6078759037379035463, guid: 79363cb8a46d597478eb47fc81f5409f,
         type: 3}
@@ -2172,6 +2270,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: XR Origin (XR Rig) Wingsuit
       objectReference: {fileID: 0}
+    - target: {fileID: 7467864171743606594, guid: 79363cb8a46d597478eb47fc81f5409f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2198,3 +2301,4 @@ SceneRoots:
   - {fileID: 6067294124662762922}
   - {fileID: 398079372}
   - {fileID: 1174529306}
+  - {fileID: 548475857}
