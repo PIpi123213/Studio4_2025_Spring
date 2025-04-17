@@ -170,17 +170,13 @@ public class ZipLine : MonoBehaviour
                     currentSpeed * Time.deltaTime
                 );
             
-                /*zipLineHandler.rotation = Quaternion.RotateTowards(
+                zipLineHandler.rotation = Quaternion.RotateTowards(
                   zipLineHandler.rotation,
                   targetRotation,
                   rotationSpeed * Time.deltaTime
-                );*/
-
-                zipLineHandler.rotation = Quaternion.Lerp(
-                zipLineHandler.rotation,
-                targetRotation,
-                rotationSpeed * Time.deltaTime
                 );
+
+             
                 // 同步玩家位置
                 /*  if (playerTransform != null)
                   {
@@ -210,11 +206,11 @@ public class ZipLine : MonoBehaviour
         //grabInteractable.interactionLayers = originalLayer;
         //dynamicMoveProvider.useGravity = true;
         // **强制释放玩家**
-        var interactors = new List<IXRSelectInteractor>(grabInteractable.interactorsSelecting);
+      /*  var interactors = new List<IXRSelectInteractor>(grabInteractable.interactorsSelecting);
         foreach (var interactor in interactors)
         {
             interactionManager.SelectExit(interactor, grabInteractable);
         }
-
+*/
     }
 }
