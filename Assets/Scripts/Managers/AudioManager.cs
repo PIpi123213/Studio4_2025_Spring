@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.XR.Interaction.Toolkit;
 
 [System.Serializable]
 public class Sound
@@ -52,6 +53,16 @@ public class AudioManager : MonoBehaviour
         InitSounds(sfxSounds);
     }
 
+    private void OnEnable()
+    {
+        EventManager.Instance.Subscribe(CustomClimbInteractable.OnRockClimb,OnPlayRandomClimbSound );
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.Unsubscribe(CustomClimbInteractable.OnRockClimb, OnPlayRandomClimbSound);
+    }
+
     void InitSounds(Sound[] sounds)
     {
         foreach (Sound s in sounds)
@@ -71,15 +82,23 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    
     public void PlayAudio(string name)
     {
         if (!soundMap.TryGetValue(name, out Sound s))
         {
-            Debug.LogWarning("Sound: " + name + " not found");
+            Debug.Log("Sound: " + name + " not found");
             return;
         }
-
+        Debug.Log("播放音效: " + name);
         s.source.Play();
+    }
+
+    private void OnPlayRandomClimbSound(object param)
+    {
+        Debug.Log("攀岩声触发" + param.ToString());
+        string soundName = "攀岩声" + param.ToString();
+        PlayAudio(soundName);
     }
 
     public void StopAudio(string name)
@@ -89,5 +108,16 @@ public class AudioManager : MonoBehaviour
             s.source.Stop();
         }
     }
+    
+
+        public AudioSource audioSource;
+        public AudioClip clip;
+
+        void Start()
+        {
+            // 播放一次音效
+            audioSource.PlayOneShot(clip);
+        }
+    
     
 }

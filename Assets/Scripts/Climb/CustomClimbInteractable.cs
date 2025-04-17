@@ -156,6 +156,7 @@ namespace UnityEngine.XR.Interaction.Toolkit
         }
 
         /// <inheritdoc />
+        public const string OnRockClimb = "OnRockClimb";
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
@@ -164,6 +165,12 @@ namespace UnityEngine.XR.Interaction.Toolkit
 
             if (!CharacterClimb.isStart)  CharacterClimb.isStart = true;
             if (ZipLine.isSliding&&ZipLine.isDone) ZipLine.isSliding = false;
+            Debug.Log("Rock Climb");
+            int randomIndex = UnityEngine.Random.Range(1, 4);
+            if (transform.gameObject.tag == "Rock")
+            {
+                EventManager.Instance.Trigger(OnRockClimb, randomIndex);
+            }
         }
 
         /// <inheritdoc />
