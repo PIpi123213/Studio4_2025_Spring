@@ -206,11 +206,11 @@ public class ZipLine : MonoBehaviour
         //grabInteractable.interactionLayers = originalLayer;
         //dynamicMoveProvider.useGravity = true;
         // **强制释放玩家**
-        var interactors = new List<IXRSelectInteractor>(grabInteractable.interactorsSelecting);
+      /*  var interactors = new List<IXRSelectInteractor>(grabInteractable.interactorsSelecting);
         foreach (var interactor in interactors)
         {
             interactionManager.SelectExit(interactor, grabInteractable);
         }
-
+*/
     }
 }
