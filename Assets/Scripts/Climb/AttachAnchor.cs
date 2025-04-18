@@ -40,7 +40,7 @@ public class AttachAnchor : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // 如果已经绑定过一次，就直接返回
-        if (hasAttached || isFirst)
+        if (hasAttached || isFirst || !CharacterClimb.isClimbing )
         {
 
             return;

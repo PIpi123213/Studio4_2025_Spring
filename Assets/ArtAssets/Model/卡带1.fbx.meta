@@ -8,17 +8,17 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: SketchfabCartridge_basecolor
-    second: {fileID: 2800000, guid: df2cb75e3415c0f498ad3e47913d19e8, type: 3}
+    second: {fileID: 2800000, guid: 7bf53646b9c474e44b28c1b83c12505f, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: SketchfabDendy_basecolor
-    second: {fileID: 2800000, guid: e09fa29c22418044d9fcc81c08a7db12, type: 3}
+    second: {fileID: 2800000, guid: 98eb462a2806c1a43a6c4b2b4881f488, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: SketchfabDendy_normal
-    second: {fileID: 2800000, guid: 4338733e0f3babc4eb755bb7368ef884, type: 3}
+    second: {fileID: 2800000, guid: d01a147eb77a85c41bf8cd3a9e1234df, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
