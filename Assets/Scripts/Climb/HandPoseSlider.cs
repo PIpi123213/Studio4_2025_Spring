@@ -32,6 +32,7 @@ public class HandPoseSlider : MonoBehaviour
 
     // 标识当前是否处于 zipline 状态（例如由 Zipline 脚本控制）
     public bool ziplineActive = false;
+    public bool isUnset = false;
 
     void Start()
     {
@@ -51,7 +52,7 @@ public class HandPoseSlider : MonoBehaviour
         if (arg.interactorObject is XRDirectInteractor)
         {
             handDataPose handData = arg.interactorObject.transform.GetComponentInChildren<handDataPose>();
-            handData.animator.enabled = false;
+            //handData.animator.enabled = false;
             if (handData.type == handDataPose.HandModelType.Right && rightHandPose != null)
             {
                 SetRightHandDataValues(handData, rightHandPose);
@@ -104,6 +105,7 @@ public class HandPoseSlider : MonoBehaviour
                     pendingLeftHandData = handData;
                     Debug.Log("暂存左手退出事件信息");
                 }
+                isUnset = true;
             }
             return;
         }
@@ -111,6 +113,7 @@ public class HandPoseSlider : MonoBehaviour
         {
             if (arg.interactorObject is XRDirectInteractor)
             {
+
                 Debug.LogWarning("songkai");
                 handDataPose handData = arg.interactorObject.transform.GetComponentInChildren<handDataPose>();
                 if (handData.type == handDataPose.HandModelType.Right && rightHandPose != null)

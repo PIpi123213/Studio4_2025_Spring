@@ -201,16 +201,21 @@ public class ZipLine : MonoBehaviour
         //isSliding = false;
         isDone = true;
         handPoseSlider.ziplineActive = false;
-        handPoseSlider.ProcessPendingExitEvents();
+        if (handPoseSlider.isUnset)
+        {
+            handPoseSlider.ProcessPendingExitEvents();
+        }
+        else
+        {
+            var interactors = new List<IXRSelectInteractor>(grabInteractable.interactorsSelecting);
+            foreach (var interactor in interactors)
+            {
+                interactionManager.SelectExit(interactor, grabInteractable);
+            }
+        }
         // **恢复交互**
         //grabInteractable.interactionLayers = originalLayer;
         //dynamicMoveProvider.useGravity = true;
         // **强制释放玩家**
-      /*  var interactors = new List<IXRSelectInteractor>(grabInteractable.interactorsSelecting);
-        foreach (var interactor in interactors)
-        {
-            interactionManager.SelectExit(interactor, grabInteractable);
-        }
-*/
     }
 }
