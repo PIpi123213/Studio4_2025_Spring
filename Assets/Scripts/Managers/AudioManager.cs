@@ -51,11 +51,13 @@ public class AudioManager : MonoBehaviour
 
         InitSounds(bgmSounds);
         InitSounds(sfxSounds);
+
+
+
     }
 
     private void OnEnable()
     {
-        EventManager.Instance.Subscribe(CustomClimbInteractable.OnRockClimb,OnPlayRandomClimbSound );
     }
 
     private void OnDisable()
@@ -112,5 +114,7 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         PlayAudio("LavaBGM");
+        EventManager.Instance.Subscribe(CustomClimbInteractable.OnRockClimb,OnPlayRandomClimbSound );
+
     }
 }
