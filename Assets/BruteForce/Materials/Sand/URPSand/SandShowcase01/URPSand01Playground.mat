@@ -410,7 +410,7 @@ Material:
     - _ParallaxStrength: {r: 0, g: 0.125, b: -0.13, a: 0.1}
     - _ProjectedShadowColor: {r: 0.4151572, g: 0.40316838, b: 0.4245283, a: 1}
     - _ReflectionColor: {r: 0.009433985, g: 0.009433985, b: 0.009433985, a: 0.8}
-    - _RimColor: {r: 0.047169805, g: 0.0065266346, b: 0.023118136, a: 1}
+    - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _RockTint: {r: 0.94509804, g: 0.6733689, b: 0.22745097, a: 1}
     - _RockTrail: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
