@@ -21,7 +21,7 @@ public class EventManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
     }
-    
+
     /// 订阅事件监听
     public void Subscribe(string eventName, Action<object> listener)
     {
@@ -30,14 +30,14 @@ public class EventManager : MonoBehaviour
 
         eventTable[eventName] += listener;
     }
-    
+
     /// 移除事件监听
     public void Unsubscribe(string eventName, Action<object> listener)
     {
         if (eventTable.ContainsKey(eventName))
             eventTable[eventName] -= listener;
     }
-    
+
     /// 触发事件（可传参）
     public void Trigger(string eventName, object param = null)
     {
@@ -47,7 +47,15 @@ public class EventManager : MonoBehaviour
         }
         else
         {
+            PrintAllEventNames();
             Debug.LogWarning($"事件 {eventName} 未被订阅，但仍被触发。");
+        }
+    }
+    public void PrintAllEventNames()
+    {
+        foreach (var eventName in eventTable.Keys)
+        {
+            Debug.Log($"Event Name: {eventName}");
         }
     }
 }

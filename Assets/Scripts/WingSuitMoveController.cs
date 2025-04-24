@@ -52,13 +52,11 @@ public class WingSuitMoveController : MonoBehaviour
 
     private void ApplyRotation()
     {
-        // 1. 计算目标 yaw
-        yaw += (leftController.position.y - rightController.position.y) * 120f * Time.deltaTime;
+        if (isRotatingAway) return; // 如果正在旋转，跳过输入控制
 
-        // 2. 平滑过渡 currentYaw → yaw（使用 SmoothDamp）
-        currentYaw = Mathf.SmoothDampAngle(currentYaw, yaw, ref yawVelocity, 0.2f);
+        yaw        += (leftController.position.y - rightController.position.y) * 120f * Time.deltaTime;
+        currentYaw =  Mathf.SmoothDampAngle(currentYaw, yaw, ref yawVelocity, 0.2f);
 
-        // 3. 应用平滑后的角度
         Quaternion targetRotation = Quaternion.Euler(0f, currentYaw, 0f);
         rb.MoveRotation(targetRotation);
     }
@@ -72,7 +70,7 @@ public class WingSuitMoveController : MonoBehaviour
         // 启动协程平滑转向，同时禁用控制器输入旋转
         StartCoroutine(SmoothRotateAway(directionAway, 2f));
     }
-    private IEnumerator SmoothRotateAway(Vector3 direction, float duration)//转向
+    private IEnumerator SmoothRotateAway(Vector3 direction, float duration)
     {
         isRotatingAway = true;
 
@@ -82,27 +80,22 @@ public class WingSuitMoveController : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            // 计算 0~1 的 t 值
-            float t = elapsedTime / duration;
-
-            // 使用 SmoothStep 创建渐进式插值因子（缓入缓出）
+            float t       = elapsedTime / duration;
             float smoothT = Mathf.SmoothStep(0f, 1f, t);
 
-            // 使用平滑后的插值因子进行球形插值
             Quaternion newRotation = Quaternion.Slerp(initialRotation, targetRotation, smoothT);
 
             rb.MoveRotation(newRotation);
-            yaw = newRotation.eulerAngles.y;
-
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         rb.MoveRotation(targetRotation);
-        yaw            = targetRotation.eulerAngles.y;
 
-        currentYaw     = yaw;
-        yawVelocity    = 0f;
+        // 确保最终角度更新
+        yaw         = targetRotation.eulerAngles.y;
+        currentYaw  = yaw;
+        yawVelocity = 0f;
 
         isRotatingAway = false;
     }
