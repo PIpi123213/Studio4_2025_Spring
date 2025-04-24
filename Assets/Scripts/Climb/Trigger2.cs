@@ -2,6 +2,7 @@ using AmazingAssets.DynamicRadialMasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class Trigger2 : MonoBehaviour
@@ -17,6 +18,15 @@ public class Trigger2 : MonoBehaviour
     public Camera playercamera;
     public AttachAnchor attachAnchor;
     public GameObject lake;
+    public Vector3 lakeTargetPosition = new Vector3(0, 0, 0);
+    public Vector3 lakeStartPosition = new Vector3(0, 0, 0);
+    public GameObject postprocess;
+    
+    private void Awake()
+    {
+        lake.transform.position = lakeStartPosition;
+        ResetPostprocess();
+    }
     void Start()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
@@ -26,6 +36,10 @@ public class Trigger2 : MonoBehaviour
         drmGameObject.radius = 0;
         RenderSettings.skybox.SetFloat("_Exposure", 0);
         lake.SetActive(false);
+
+
+       
+
     }
 
     private void OnSelectEnter(SelectEnterEventArgs args)
@@ -54,7 +68,7 @@ public class Trigger2 : MonoBehaviour
         yield return opacityRoutine;
         //��������
 
-        lake.SetActive(true);
+        
         MoveManager.Instance.OnSceneIn();//��¼λ��
         // ��ɺ�ִ�г����л��������߼�
         Debug.Log("All animations completed!");
@@ -72,27 +86,62 @@ public class Trigger2 : MonoBehaviour
     {
 
         float elapsedTime = 0f;
+        Vector3 lakeStartPosition = Vector3.zero;
+        float remainingMovementTime = 0f;
 
         while (elapsedTime < RadiusDuration)
         {
             // ʹ�÷����Բ�ֵ����
             float t = Mathf.Pow(elapsedTime / RadiusDuration, 2); // ��������
             drmGameObject.radius = Mathf.Lerp(startRadius, endRadius, t);
-            if (drmGameObject.radius > 200)
+            if (drmGameObject.radius > 250)
             {
                 playercamera.clearFlags = CameraClearFlags.Skybox;
                 float extraSpeedFactor = 5f; // �ɸ�����Ҫ�������ٱ���
                 float extraT = Mathf.Pow(elapsedTime / RadiusDuration, 2) * extraSpeedFactor;
-
+                
                 // ���Ӷ���İ뾶����
                 drmGameObject.radius += Mathf.Lerp(0, endRadius - startRadius, extraT) * Time.deltaTime;
+
+
+
+                if (!lake.activeSelf)
+                {
+                    lake.SetActive(true);
+                    lakeStartPosition = lake.transform.position;
+                    remainingMovementTime = RadiusDuration - elapsedTime;
+                    
+                }
+
+                // 额外的半径增长
+                drmGameObject.radius += Mathf.Lerp(0, endRadius - startRadius, extraT) * Time.deltaTime;
+
+                // 计算剩余时间比例
+                if (remainingMovementTime > 0)
+                {
+                    float moveProgress = 1f - (RadiusDuration - elapsedTime) / remainingMovementTime;
+                    moveProgress = Mathf.Clamp01(moveProgress);
+
+                    // 使用线性移动确保在剩余时间内完成
+                    lake.transform.position = Vector3.Lerp(lakeStartPosition, lakeTargetPosition, moveProgress);
+
+                    
+                }
+
+
+
+
+
+
+
             }
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         // ʾ�����룺����Passthrough��ָ�����
 
-
+        lake.transform.position = lakeTargetPosition;
+        Debug.Log("Final lake position: " + lake.transform.position);
         hasTriggered = true;
         radiusFinished = true;
         drmGameObject.radius = endRadius;
@@ -121,6 +170,7 @@ public class Trigger2 : MonoBehaviour
             ptLayer.enabled = false;
             Destroy(ptLayer);
         }
+        SetupPostprocess();
         Coroutine skyboxRoutine = StartCoroutine(AnimateSkyboxExposure(0f, 1f, skyboxFadeDuration));
         yield return skyboxRoutine;
 
@@ -143,6 +193,24 @@ public class Trigger2 : MonoBehaviour
             // 确保最终曝光度为目标值
             RenderSettings.skybox.SetFloat("_Exposure", endExposure);
         }
+    }
+    public void resetSkybox()
+    {
+        RenderSettings.skybox.SetFloat("_Exposure", 1f);
+        playercamera.clearFlags = CameraClearFlags.Skybox;
+       
+    }
+    public void SetupPostprocess()
+    {
+        postprocess.SetActive(true);
+        playercamera.gameObject.GetComponent<UniversalAdditionalCameraData>().renderPostProcessing = true;
+
+    }
+    public void ResetPostprocess()
+    {
+        postprocess.SetActive(false);
+        playercamera.gameObject.GetComponent<UniversalAdditionalCameraData>().renderPostProcessing = false;
+
     }
 
     void OnDestroy()
