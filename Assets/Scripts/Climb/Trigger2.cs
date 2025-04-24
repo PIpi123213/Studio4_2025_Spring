@@ -20,12 +20,13 @@ public class Trigger2 : MonoBehaviour
     public GameObject lake;
     public Vector3 lakeTargetPosition = new Vector3(0, 0, 0);
     public Vector3 lakeStartPosition = new Vector3(0, 0, 0);
-    public GameObject postprocess;
+    public GameObject VFX;
+   //public GameObject postprocess;
     
     private void Awake()
     {
         lake.transform.position = lakeStartPosition;
-        ResetPostprocess();
+        //ResetPostprocess();
     }
     void Start()
     {
@@ -36,7 +37,7 @@ public class Trigger2 : MonoBehaviour
         drmGameObject.radius = 0;
         RenderSettings.skybox.SetFloat("_Exposure", 0);
         lake.SetActive(false);
-
+        VFX.SetActive(false);
 
        
 
@@ -102,17 +103,29 @@ public class Trigger2 : MonoBehaviour
                 
                 // ���Ӷ���İ뾶����
                 drmGameObject.radius += Mathf.Lerp(0, endRadius - startRadius, extraT) * Time.deltaTime;
+                VFX.SetActive(true);
+
+
+               
 
 
 
+
+
+
+
+            }
+            if (drmGameObject.radius > 450)
+            {
                 if (!lake.activeSelf)
                 {
                     lake.SetActive(true);
                     lakeStartPosition = lake.transform.position;
                     remainingMovementTime = RadiusDuration - elapsedTime;
-                    
-                }
 
+                }
+                float extraSpeedFactor = 5f;
+                float extraT = Mathf.Pow(elapsedTime / RadiusDuration, 2) * extraSpeedFactor;
                 // 额外的半径增长
                 drmGameObject.radius += Mathf.Lerp(0, endRadius - startRadius, extraT) * Time.deltaTime;
 
@@ -125,15 +138,8 @@ public class Trigger2 : MonoBehaviour
                     // 使用线性移动确保在剩余时间内完成
                     lake.transform.position = Vector3.Lerp(lakeStartPosition, lakeTargetPosition, moveProgress);
 
-                    
+
                 }
-
-
-
-
-
-
-
             }
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -170,7 +176,7 @@ public class Trigger2 : MonoBehaviour
             ptLayer.enabled = false;
             Destroy(ptLayer);
         }
-        SetupPostprocess();
+        //SetupPostprocess();
         Coroutine skyboxRoutine = StartCoroutine(AnimateSkyboxExposure(0f, 1f, skyboxFadeDuration));
         yield return skyboxRoutine;
 
@@ -200,7 +206,7 @@ public class Trigger2 : MonoBehaviour
         playercamera.clearFlags = CameraClearFlags.Skybox;
        
     }
-    public void SetupPostprocess()
+   /* public void SetupPostprocess()
     {
         postprocess.SetActive(true);
         playercamera.gameObject.GetComponent<UniversalAdditionalCameraData>().renderPostProcessing = true;
@@ -212,7 +218,7 @@ public class Trigger2 : MonoBehaviour
         playercamera.gameObject.GetComponent<UniversalAdditionalCameraData>().renderPostProcessing = false;
 
     }
-
+*/
     void OnDestroy()
     {
         // ȡ�������¼�
