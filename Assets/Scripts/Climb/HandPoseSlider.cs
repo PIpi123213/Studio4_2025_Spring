@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using static Oculus.Interaction.GrabAPI.FingerPalmGrabAPI;
 
 public class HandPoseSlider : MonoBehaviour
 {
@@ -55,8 +56,8 @@ public class HandPoseSlider : MonoBehaviour
             //handData.animator.enabled = false;
             if (handData.type == handDataPose.HandModelType.Right && rightHandPose != null)
             {
-                SetRightHandDataValues(handData, rightHandPose);
-                // SendHandData(handData, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right);
+                //SetRightHandDataValues(handData, rightHandPose);
+                //SendHandData(handData, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right);
 
 
                 //StartCoroutine(SetHandDataRoutine(handData, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right));
@@ -70,9 +71,9 @@ public class HandPoseSlider : MonoBehaviour
             }
             else if (handData.type == handDataPose.HandModelType.Left && leftHandPose != null)
             {
-                SetLeftHandDataValues(handData, leftHandPose);
-                // SendHandData(handData, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left);
-                //StartCoroutine(SetHandDataRoutine(handData, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left));
+                //SetLeftHandDataValues(handData, leftHandPose);
+               // SendHandData(handData, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left);
+               // StartCoroutine(SetHandDataRoutine(handData, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left));
                
                     leftHandPose.gameObject.SetActive(true);
                     leftHandModel_Geom.SetActive(false);
@@ -118,10 +119,11 @@ public class HandPoseSlider : MonoBehaviour
                 handDataPose handData = arg.interactorObject.transform.GetComponentInChildren<handDataPose>();
                 if (handData.type == handDataPose.HandModelType.Right && rightHandPose != null)
                 {
+                    ResetPose(handData);
                     //SendHandData(handData, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right);
                     //StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_right, startingHandRotation_right, startingFingerRotations_right, finalHandPosition_right, finalHandRotation_right, finalFingerRotations_right));
-                    
-                        rightHandPose.gameObject.SetActive(false);
+
+                    rightHandPose.gameObject.SetActive(false);
                         rightHandModel_Geom.SetActive(true);
                     
 
@@ -129,10 +131,10 @@ public class HandPoseSlider : MonoBehaviour
                 else if (handData.type == handDataPose.HandModelType.Left && leftHandPose != null)
                 {
                     //SendHandData(handData, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left);
-                   // StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left));
-                    
-                    
-                        leftHandPose.gameObject.SetActive(false);
+                    //StartCoroutine(SetHandDataRoutine(handData, startingHandPosition_left, startingHandRotation_left, startingFingerRotations_left, finalHandPosition_left, finalHandRotation_left, finalFingerRotations_left));
+
+                    ResetPose(handData);
+                    leftHandPose.gameObject.SetActive(false);
                         leftHandModel_Geom.SetActive(true);
                     
 
@@ -142,18 +144,27 @@ public class HandPoseSlider : MonoBehaviour
         }
         // 非 zipline 状态下，直接处理退出事
     }
-    
+    public void ResetPose(handDataPose handData)
+    {
+        handData.root.localPosition = handData.orginLocalPos;
+        Debug.Log(handData.root.localPosition);
+
+
+    }
     public void ProcessPendingExitEvents()
     {
         // 如果暂存了右手退出信息
         if (pendingRightHandData != null)
         {
+            ResetPose(pendingRightHandData);
             ProcessUnSetPoseForHand(pendingRightHandData);
+           
             pendingRightHandData = null;
         }
         // 同理处理左手
         if (pendingLeftHandData != null)
         {
+            ResetPose(pendingLeftHandData);
             ProcessUnSetPoseForHand(pendingLeftHandData);
             pendingLeftHandData = null;
         }
@@ -161,6 +172,7 @@ public class HandPoseSlider : MonoBehaviour
     private void ProcessUnSetPoseForHand(handDataPose handData)
     {
         Debug.LogWarning("处理暂存退出事件，手：" + handData.type);
+        
         if (handData.type == handDataPose.HandModelType.Right && rightHandPose != null)
         {
             // 此处的参数可以根据实际情况调整
@@ -178,6 +190,7 @@ public class HandPoseSlider : MonoBehaviour
                 leftHandModel_Geom.SetActive(true);
             
         }
+        
         handData.animator.enabled = true;
     }
 

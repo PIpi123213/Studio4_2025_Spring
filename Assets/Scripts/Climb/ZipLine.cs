@@ -126,6 +126,7 @@ public class ZipLine : MonoBehaviour
         {
             Vector3 direction = (waypoints[i + 1].position - waypoints[i].position).normalized;
             // 让X轴指向方向，其余轴根据需求调整
+            direction.y = 0;
             waypointRotations[i] = Quaternion.LookRotation(direction) * Quaternion.Euler(0, -90, 0);
         }
         waypointRotations[waypoints.Length - 1] = waypointRotations[waypoints.Length - 2];
@@ -170,13 +171,17 @@ public class ZipLine : MonoBehaviour
                     currentSpeed * Time.deltaTime
                 );
             
-                zipLineHandler.rotation = Quaternion.RotateTowards(
+          /*      zipLineHandler.rotation = Quaternion.RotateTowards(
                   zipLineHandler.rotation,
                   targetRotation,
                   rotationSpeed * Time.deltaTime
-                );
+                );*/
+                zipLineHandler.rotation = Quaternion.Slerp(
+                    zipLineHandler.rotation,
+                    targetRotation,
+                    rotationSpeed * Time.deltaTime
+                );  
 
-             
                 // 同步玩家位置
                 /*  if (playerTransform != null)
                   {
@@ -201,6 +206,8 @@ public class ZipLine : MonoBehaviour
         //isSliding = false;
         isDone = true;
         handPoseSlider.ziplineActive = false;
+        //playerTransform.rotation = new Quaternion(0, playerTransform.rotation.y, 0, 0);
+
         if (handPoseSlider.isUnset)
         {
             handPoseSlider.ProcessPendingExitEvents();
