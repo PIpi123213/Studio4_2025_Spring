@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using Unity.SharpZipLib.Zip.Compression.Streams;
 
 public class WingSuitMoveController : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class WingSuitMoveController : MonoBehaviour
 
     void Update()
     {
-        Debug.DrawRay(transform.position, -transform.forward * 10000f, Color.red);
+        Debug.DrawRay(transform.position, -transform.forward * 10f, Color.red);
     }
 
     private void FixedUpdate()
@@ -40,7 +41,15 @@ public class WingSuitMoveController : MonoBehaviour
     [SerializeField] private float glideSpeed = 1000f;
     private void ApplyMovement()
     {
-        rb.velocity = transform.forward * glideSpeed;
+        // 调用垂直速度计算函数
+        DetectDive();
+
+        // 计算最终速度
+        Vector3 glideVelocity = transform.forward * glideSpeed;
+        glideVelocity.y = verticalSpeed; // 添加垂直速度
+
+        // 应用速度
+        rb.velocity = glideVelocity;
     }
 
     // 仅用 yaw 控制水平旋转即可
@@ -66,17 +75,36 @@ public class WingSuitMoveController : MonoBehaviour
     {
         Debug.Log("Detected object: " + other.name);
         // 计算远离物体的方向；这里可以依据需求调整策略
-        Vector3 directionAway = transform.forward*1.5f + (transform.position - other.ClosestPoint(transform.position)).normalized;
+        Vector3 directionAway = transform.forward*1f + (transform.position - other.ClosestPoint(transform.position)).normalized;
         // 启动协程平滑转向，同时禁用控制器输入旋转
         StartCoroutine(SmoothRotateAway(directionAway, 2f));
     }
+
+    [SerializeField] private float defaultVerticalSpeed;
+    [SerializeField] private float gravityFactor = 10f;//控制俯冲比例
+    private                  float verticalSpeed ;
+
+    private void DetectDive()
+    {
+        float averageHeight = (leftController.position.y + rightController.position.y) / 2f;
+        verticalSpeed = -defaultVerticalSpeed + averageHeight * gravityFactor;
+
+    }
+
     private IEnumerator SmoothRotateAway(Vector3 direction, float duration)
     {
         isRotatingAway = true;
 
         Quaternion initialRotation = rb.rotation;
-        Quaternion targetRotation  = Quaternion.LookRotation(direction);
-        float      elapsedTime     = 0f;
+
+        // 仅计算目标方向的 yaw 旋转
+        Vector3    targetDirection = new Vector3(direction.x, 0f, direction.z).normalized;
+        Quaternion targetRotation  = Quaternion.LookRotation(targetDirection);
+
+        // 保持当前的 pitch 和 roll
+        targetRotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f);
+
+        float elapsedTime = 0f;
 
         while (elapsedTime < duration)
         {
