@@ -154,7 +154,7 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _Smoothness: 0
+    - _Smoothness: 0.025
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -179,7 +179,7 @@ Material:
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
-    - _UVScaleBase: 1
+    - _UVScaleBase: 2
     - _UVScaleNoise: 1
     - _UVSec: 0
     - _UseShadowThreshold: 0
