@@ -165,10 +165,10 @@ namespace UnityEngine.XR.Interaction.Toolkit
 
             if (!CharacterClimb.isStart)  CharacterClimb.isStart = true;
             if (ZipLine.isSliding&&ZipLine.isDone) ZipLine.isSliding = false;
-            Debug.Log("Rock Climb");
             int randomIndex = UnityEngine.Random.Range(1, 8);
             if (transform.gameObject.tag == "Rock")
             {
+                Debug.Log("Rock Climb");
                 EventManager.Instance.Trigger(OnRockClimb, randomIndex);
             }
         }
