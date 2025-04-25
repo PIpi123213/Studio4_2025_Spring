@@ -12,6 +12,7 @@ public class ZipLine : MonoBehaviour
     //public Transform endPoint;        // 滑索终点
     public float speed = 5f;          // 滑行速度
     public Transform zipLineHandler;
+    public Vector3 sliderPlayerposition;
     public float rotationSpeed = 30f;      // 旋转速度（度/秒）
    // 滑索器 (滑索器物体)
     public Transform[] waypoints;
@@ -26,7 +27,7 @@ public class ZipLine : MonoBehaviour
     private Vector3 initialPlayerOffset; // 记录玩家和滑索器之间的初始偏移量
     public HandPoseSlider handPoseSlider;
     public CustomClimbProvider climbProvider;
-
+    
     public AttachAnchor attachAnchor;
     private void Start()
     {
@@ -146,6 +147,11 @@ public class ZipLine : MonoBehaviour
         //设置为zipline子物体
         Transform originalParent = playerTransform.parent;
         playerTransform.SetParent(zipLineHandler);
+        StartCoroutine(setSlideringPlayerposition());
+        
+
+
+
         // 初始化：移动到第一个点
         zipLineHandler.position = waypoints[0].position;
         int currentWaypointIndex = 1;
@@ -200,7 +206,24 @@ public class ZipLine : MonoBehaviour
         playerTransform.SetParent(originalParent);
         EndZiplineRide();
     }
+    public IEnumerator setSlideringPlayerposition()
+    {
+        while (Vector3.Distance(playerTransform.localPosition, sliderPlayerposition) > 0.1f)
+        {
+            // 加速逻辑
+            playerTransform.localPosition = Vector3.MoveTowards(
+                  playerTransform.localPosition,
+                  sliderPlayerposition,
+                  0.1f * Time.deltaTime
+              );
+            yield return null;
+        }
 
+
+       
+
+
+    }
     private void EndZiplineRide()
     {
         //isSliding = false;
