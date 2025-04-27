@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Obi/Editor/Resources/Icons/ObiRigidbody2D Icon.png.meta
 guid: 21e01eb398ab24a7abb1f3b493af6b20
 timeCreated: 1517939136
+========
+guid: 6da22d6bce08a4f3d86542bb903de689
+timeCreated: 1502054757
+>>>>>>>> origin/master:Assets/Obi/Editor/Resources/Icons/ObiCollider Icon.png.meta
 licenseType: Store
 TextureImporter:
   fileIDToRecycleName: {}
@@ -30,7 +35,7 @@ TextureImporter:
     filterMode: -1
     aniso: -1
     mipBias: -1
-    wrapMode: 1
+    wrapMode: -1
   nPOTScale: 1
   lightmap: 0
   compressionQuality: 50

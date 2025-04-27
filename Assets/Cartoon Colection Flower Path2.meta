@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Cartoon Colection Flower Path2.meta
 guid: 6c3340f2b7d0c4c41806e98b2c075c8a
 folderAsset: yes
 timeCreated: 1561047522
+========
+guid: 89e025099d6a94fcfaad0e04ae71e626
+folderAsset: yes
+timeCreated: 1466883786
+>>>>>>>> origin/master:Assets/Editor Default Resources.meta
 licenseType: Store
 DefaultImporter:
   userData: 

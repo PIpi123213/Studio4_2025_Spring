@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Lightbeam/Source/Textures/Lightbeam_Cloud_Alpha.psd.meta
 guid: 6933015efa1d60a43962e23a17908fe5
 timeCreated: 18446744011573954816
+========
+guid: a2686776a1c104bfd8868f056a5cd335
+timeCreated: 1530703943
+licenseType: Store
+>>>>>>>> origin/master:Assets/Obi/Editor/Resources/Icons/ObiShapeMatchingConstraints Icon.png.meta
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -8,7 +14,7 @@ TextureImporter:
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
-    sRGBTexture: 1
+    sRGBTexture: 0
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -48,9 +54,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 2
   textureShape: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
@@ -65,7 +71,26 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+<<<<<<<< HEAD:Assets/Lightbeam/Source/Textures/Lightbeam_Cloud_Alpha.psd.meta
     androidETC2FallbackOverride: 0
+========
+  - buildTarget: iPhone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+>>>>>>>> origin/master:Assets/Obi/Editor/Resources/Icons/ObiShapeMatchingConstraints Icon.png.meta
   spriteSheet:
     serializedVersion: 2
     sprites: []
