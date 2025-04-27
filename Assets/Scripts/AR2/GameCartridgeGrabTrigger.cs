@@ -1,14 +1,14 @@
-using AmazingAssets.DynamicRadialMasks;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-using System.Collections;
 
-public class PhotoGrabTrigger : MonoBehaviour
+public class GameCartridgeGrabTrigger : MonoBehaviour
 {
     private XRGrabInteractable grabInteractable;
     private bool hasTriggered = false;
     
-    public const string OnPhotoGrabbed = "OnPhotoGrabbed";
+    public const string OnGameCartridgeGrabbed = "OnGameCartridgeGrabbed";
     
     void Start()
     {
@@ -20,13 +20,13 @@ public class PhotoGrabTrigger : MonoBehaviour
 
     private void OnSelectEnter(SelectEnterEventArgs args)
     {
-        Debug.Log("Photo grabbed!");
+        Debug.Log("GC grabbed!");
 
         if (!hasTriggered)
         {
             hasTriggered = true;
             // 触发事件
-            EventManager.Instance.Trigger(OnPhotoGrabbed,"PhotoGrabbed");
+            EventManager.Instance.Trigger(OnGameCartridgeGrabbed,"GameCartridgeGrabbed");
         }
     }
 
@@ -35,5 +35,4 @@ public class PhotoGrabTrigger : MonoBehaviour
         // 取消订阅事件
         grabInteractable.selectEntered.RemoveListener(OnSelectEnter);
     }
-    
 }

@@ -52,14 +52,18 @@ public class DialogueManagerForScene1 : MonoBehaviour
     private void OnEnable()
     {
         /*if (EventManager.Instance != null)*/
-            EventManager.Instance.Subscribe(LetterGrabTrigger.OnLetterGrabbed, OnPlayDialogue);
+            EventManager.Instance.Subscribe(PhotoGrabTrigger.OnPhotoGrabbed, OnPlayDialogue);
+            EventManager.Instance.Subscribe(FolderGrabTrigger.OnFolderGrabbed, OnPlayDialogue);
+            EventManager.Instance.Subscribe(GameCartridgeGrabTrigger.OnGameCartridgeGrabbed, OnPlayDialogue);
         /*else
             Debug.LogWarning("EventManager.Instance 为空，DialogueManager 订阅失败");;*/
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.Unsubscribe(LetterGrabTrigger.OnLetterGrabbed, OnPlayDialogue);
+        EventManager.Instance.Unsubscribe(PhotoGrabTrigger.OnPhotoGrabbed, OnPlayDialogue);
+        EventManager.Instance.Unsubscribe(FolderGrabTrigger.OnFolderGrabbed, OnPlayDialogue);
+        EventManager.Instance.Unsubscribe(GameCartridgeGrabTrigger.OnGameCartridgeGrabbed, OnPlayDialogue);
     }
 
     private void OnPlayDialogue(object param)
